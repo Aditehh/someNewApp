@@ -1,7 +1,10 @@
+import { NextResponse } from 'next/server'
 import React from 'react'
 
-export default function route() {
-    return (
-        console.log("printf")
-    )
+export async function POST() {
+    const data = {
+        message: "login register",
+        timeStamp: new Date().toISOString(),
+    }
+    return NextResponse.json(data)
 }
