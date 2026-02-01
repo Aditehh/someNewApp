@@ -30,10 +30,13 @@ export async function getCurrentUser() {
 
 }
 
-export async function becomeProvider(userId: string, location: string) {
+export async function becomeProvider(location?: string) {
     const authUser = await getCurrentUser();
 
     if (!authUser) return null;
+
+    const userId = authUser.id;
+
 
     const existingUser = await prisma.professionalProfile.findUnique({
         where: {
@@ -56,4 +59,6 @@ export async function becomeProvider(userId: string, location: string) {
         where: { id: userId },
         data: { role: 'PROVIDER' }
     })
+
+    return profile;
 }
