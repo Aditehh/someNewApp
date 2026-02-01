@@ -1,18 +1,24 @@
 import prisma from './db';
+import { auth } from './auth';
+import { headers } from 'next/headers';
 
-export async function getUserById(userId: string) {
+export async function getCurrentUser() {
 
-    const user = await prisma.user.findUnique({
+   const reqHeaders = await headers();
+   const session = await auth.api.getSession({
+    headers: reqHeaders
+   })
 
-        where: {
-            id: userId,
-        }
+   if(!session || !session.user) {
+    return null
+   }
+   return {
+    id: session.user.id,
+    email: session.user.email,
+    name: session.user.name,
+    image: session.user.image,
 
-    })
-
-    if (!userId) return null;
-
-    return user
+   }
 
 }
 

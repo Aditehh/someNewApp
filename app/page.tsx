@@ -1,15 +1,14 @@
 import Image from "next/image";
-import { getUserWithProfessionalProfile } from "@/lib/domain";
+import AuthButton from "@/components/ui/auth-button";
 
-export default function Home() {
+export default async function Home(userId: string) {
 
-  const user = getUserWithProfessionalProfile;
 
-  console.log(user)
 
   return (
     <>
       this the best service app rn in nepal yk
+      <AuthButton />
     </>
   );
 }
