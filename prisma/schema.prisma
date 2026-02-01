@@ -113,7 +113,7 @@ model Category {
   services Service[]
 }
 
-model Booking { 
+model Booking {
   id        Int           @id @default(autoincrement())
   userId    String // the customer
   serviceId Int
