@@ -1,24 +1,30 @@
 import prisma from './db';
-// import type { User } from '@prisma/client';
 
-export async function syncUser(email: string, name: string, image?: string) {
+export async function getUserById(userId: string) {
 
-    let user = await prisma.user.findUnique({
-        where: { email },
-    });
+    const user = await prisma.user.findUnique({
 
-    // Step 2: If user doesn't exist, create one
-    if (!user) {
-        user = await prisma.user.create({
-            data: {
-                email,
-                name,
-                image,
-                role: 'USER',
-            },
+        where: {
+            id: userId,
+        }
 
-        });
-    }
+    })
 
-    return user;
+    if (!userId) return null;
+
+    return user
+
+}
+
+export async function getUserWithProfessionalProfile(userId: string) {
+    if (userId) return null;
+
+    return prisma.user.findUnique({
+        where: {
+            id: userId,
+        },
+        include: {
+            professionalProfile: true
+        }
+    })
 }
