@@ -7,3 +7,147 @@ datasource db {
   provider = "postgresql"
 }
 
+// Better Auth Tables (generated)
+
+model User {
+  id            String    @id
+  name          String
+  email         String
+  role          Role      @default(USER) // Role: USER / PROVIDER / ADMIN
+  emailVerified Boolean   @default(false)
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  sessions      Session[]
+  accounts      Account[]
+
+  professionalProfile ProfessionalProfile? // optional link if user is a provider
+  bookings            Booking[] // bookings made by user (as customer)
+  reviews             Review[] // reviews made by user (as customer)
+
+  @@unique([email])
+  @@map("user")
+}
+
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@index([userId])
+  @@map("account")
+}
+
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([identifier])
+  @@map("verification")
+}
+
+// Domain Models
+
+model ProfessionalProfile {
+  id         Int      @id @default(autoincrement())
+  userId     String   @unique // links to Better Auth User
+  bio        String?
+  location   String
+  experience Int
+  verified   Boolean  @default(false)
+  createdAt  DateTime @default(now())
+
+  user     User      @relation(fields: [userId], references: [id])
+  services Service[]
+  reviews  Review[]
+}
+
+model Service {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String
+  price       Int
+  categoryId  Int
+  providerId  Int
+  createdAt   DateTime @default(now())
+
+  category Category            @relation(fields: [categoryId], references: [id])
+  provider ProfessionalProfile @relation(fields: [providerId], references: [id])
+  bookings Booking[]
+}
+
+model Category {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+
+  services Service[]
+}
+
+model Booking {
+  id        Int           @id @default(autoincrement())
+  userId    String // the customer
+  serviceId Int
+  date      DateTime
+  status    BookingStatus @default(PENDING)
+  createdAt DateTime      @default(now())
+
+  user    User    @relation(fields: [userId], references: [id])
+  service Service @relation(fields: [serviceId], references: [id])
+}
+
+model Review {
+  id         Int      @id @default(autoincrement())
+  rating     Int
+  comment    String?
+  userId     String // customer who left review
+  providerId Int // provider being reviewed
+  createdAt  DateTime @default(now())
+
+  user     User                @relation(fields: [userId], references: [id])
+  provider ProfessionalProfile @relation(fields: [providerId], references: [id])
+}
+
+// Enums
+
+enum Role {
+  USER
+  PROVIDER
+  ADMIN
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  COMPLETED
+  CANCELLED
+}
