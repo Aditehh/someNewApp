@@ -1,7 +1,7 @@
 import prisma from './db';
 import { auth } from './auth';
 import { headers } from 'next/headers';
-import { UserRoundIcon } from 'lucide-react';
+import { LocateOff, UserRoundIcon } from 'lucide-react';
 import { treeifyError } from 'better-auth';
 
 export async function getCurrentUser() {
@@ -30,15 +30,30 @@ export async function getCurrentUser() {
 
 }
 
-export async function getUserWithProfessionalProfile(userId: string) {
-    if (userId) return null;
+export async function becomeProvider(userId: string, location: string) {
+    const authUser = await getCurrentUser();
 
-    return prisma.user.findUnique({
+    if (!authUser) return null;
+
+    const existingUser = await prisma.professionalProfile.findUnique({
         where: {
-            id: userId,
-        },
-        include: {
-            professionalProfile: true
+            userId
         }
+    })
+
+    if (existingUser) return existingUser;
+
+    const profile = await prisma.professionalProfile.create({
+        data: {
+            userId,
+            location: location || "",
+            experience: 0,
+            verified: false
+        }
+    })
+
+    await prisma.user.update({
+        where: { id: userId },
+        data: { role: 'PROVIDER' }
     })
 }
