@@ -1,14 +1,18 @@
-import Image from "next/image";
 import AuthButton from "@/components/ui/auth-button";
+import { getCurrentUser } from "@/lib/domain";
 
-export default async function Home(userId: string) {
+export default async function Home() {
+  const user = await getCurrentUser();
 
+  if (!user) {
+    return <AuthButton />; // show login
+  }
 
+  console.log(user); // user + professionalProfile if you included it
 
   return (
     <>
-      this the best service app rn in nepal yk
-      <AuthButton />
+      Welcome {user.name}, this is the best service app in Nepal
     </>
   );
 }
