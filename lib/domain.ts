@@ -14,7 +14,7 @@ export async function getCurrentUser() {
         return null
     }
 
-    return prisma.user.findUnique({
+    const user = await prisma.user.findUnique({
         where: {
             id: session.user.id,
             // email: session.user.email,
@@ -25,6 +25,16 @@ export async function getCurrentUser() {
             professionalProfile: true
         }
     })
+
+    if (!user) return null;
+
+    return {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        image: user.email,
+        role: user.role
+    }
 
 
 }
