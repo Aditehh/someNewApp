@@ -26,46 +26,55 @@ export default function BecomeProviderForm() {
   const isdisabled = !location || !bio || !experience
   return (
 
+    // <form action={becomeProviderAction}>
+    //   <input name="location" defaultValue="Pokhara" />
+    //   <input name="bio" defaultValue="Test bio" />
+    //   <input name="experience" defaultValue="2" />
+    //   <button type="submit">Submit</button>
+    // </form>
 
     <form action={becomeProviderAction}>
-  {/* hidden real input */}
-  <input type="hidden" name="location" value={location} />
+      {/* THIS is what FormData reads */}
+      <Input name="location" value={location} placeholder='location' onChange={(e) => setLocation(e.target.value)} />
 
-  <Combobox items={locations}>
-    <ComboboxInput
-      value={location}
-      onChange={(e) => setLocation(e.target.value)}
-      placeholder="Select a location"
-    />
+      {/* 
+      <Combobox items={locations}>
+        <ComboboxInput
+          placeholder="Select location"
+          // value={location}
+          readOnly  
+        />
 
-    <ComboboxContent>
-      <ComboboxEmpty>No items found.</ComboboxEmpty>
-      <ComboboxList>
-        {(item) => (
-          <ComboboxItem
-            key={item}
-            value={item}
-            onSelect={() => setLocation(item)}
-          >
-            {item}
-          </ComboboxItem>
-        )}
-      </ComboboxList>
-    </ComboboxContent>
-  </Combobox>
+        <ComboboxContent>
+          <ComboboxList>
+            {(item) => (
+              <ComboboxItem
+                key={item}
+                value={item}
+                onSelect={() => setLocation(item)}
+              >
+                {item}
+              </ComboboxItem>
+            )}
+          </ComboboxList>
+        </ComboboxContent>
+      </Combobox> */}
 
-  <Input name="bio" value={bio} onChange={(e) => setBio(e.target.value)} />
-  <Input
-    name="experience"
-    value={experience}
-    onChange={(e) => setExperience(e.target.value)}
-    type="number"
-  />
+      <Input
+        name="bio"
+        value={bio}
+        onChange={(e) => setBio(e.target.value)}
+      />
 
-  <Button type="submit" disabled={isdisabled}>
-    Become a provider
-  </Button>
-</form>
+      <Input
+        name="experience"
+        type="number"
+        value={experience}
+        onChange={(e) => setExperience(e.target.value)}
+      />
+
+      <Button type="submit" disabled={isdisabled}>Become a provider</Button>
+    </form>
 
   )
 }
