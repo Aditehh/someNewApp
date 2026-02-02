@@ -9,14 +9,21 @@ export default async function Home() {
     return <AuthButton />; // show login
   }
 
+
   console.log(user); // user + professionalProfile if you included it
 
   return (
     <>
       Welcome {user.name}, this is the best service app in Nepal
-      <div>
+      {user.role !== "PROVIDER" && <div>
         <BecomeProviderForm />
       </div>
+      }:{
+        <div>
+          Already a Provider
+        </div>
+      }
     </>
   );
 }
+

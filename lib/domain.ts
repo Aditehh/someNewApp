@@ -32,34 +32,38 @@ export async function getCurrentUser() {
 
 
 export async function becomeProvider(input: {
-  location: string;
-  experience: number;
-  bio?: string;
+    location: string;
+    experience: number;
+    bio?: string;
 }) {
-  const authUser = await getCurrentUser();
-  if (!authUser) return null;
+    const authUser = await getCurrentUser();
+    if (!authUser) return null;
 
-  const userId = authUser.id;
+    const userId = authUser.id;
 
-  const existingUser = await prisma.professionalProfile.findUnique({
-    where: { userId }
-  });
-  if (existingUser) return existingUser;
-
-  const profile = await prisma.professionalProfile.create({
-    data: {
-      userId,
-      location: input.location,
-      experience: input.experience,
-      bio: input.bio,
-      verified: false
+    if (authUser.role === "PROVIDER") {
+        return null;
     }
-  });
 
-  await prisma.user.update({
-    where: { id: userId },
-    data: { role: "PROVIDER" }
-  });
+    const existingUser = await prisma.professionalProfile.findUnique({
+        where: { userId }
+    });
+    if (existingUser) return existingUser;
 
-  return profile;
+    const profile = await prisma.professionalProfile.create({
+        data: {
+            userId,
+            location: input.location,
+            experience: input.experience,
+            bio: input.bio,
+            verified: false
+        }
+    });
+
+    await prisma.user.update({
+        where: { id: userId },
+        data: { role: "PROVIDER" }
+    });
+
+    return profile;
 }
