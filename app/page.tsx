@@ -17,7 +17,7 @@ export default async function Home() {
 
   return (
     <>
-    <Navbar/>
+    <Navbar />
       <HeroSection />
       {/* Welcome {user.name}, this is the best service app in Nepal
       {user.role !== "PROVIDER" && <div>

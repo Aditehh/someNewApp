@@ -2,6 +2,8 @@
 
 import { becomeProvider } from "../domain";
 import { redirect } from "next/navigation";
+import { getCurrentUser } from "../domain";
+import { string } from "better-auth";
 
 export async function becomeProviderAction(formdata: FormData): Promise<void> {
     const location = formdata.get("location")?.toString();
@@ -19,4 +21,11 @@ export async function becomeProviderAction(formdata: FormData): Promise<void> {
     });
 
     redirect("/provider/dashboard");
+}
+
+
+export async function getCurrentUserAction(role: string) {
+    const user = await getCurrentUser();
+    return user;
+
 }

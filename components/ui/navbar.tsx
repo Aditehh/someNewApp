@@ -3,11 +3,22 @@
 import Link from "next/link";
 import { useSession } from "@/lib/auth-client";
 import { Button } from "./button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { getCurrentUserAction } from "@/lib/actions/actions";
+
+interface UserProps {
+    role: string,
+    // verified: boolean
+}
 
 export default function Navbar() {
     const { data: session } = useSession();
     const [isOpen, setIsOpen] = useState(false);
+const [user, setUser] = useState<UserProps | null>(null);
+
+    useEffect(() => {
+getCurrentUserAction().then(setUser);
+    }, []);
 
     return (
         <nav className="bg-white shadow-md sticky top-0 z-50">
@@ -29,7 +40,7 @@ export default function Navbar() {
 
                         {session ? (
                             <>
-                                {session.user.role === "USER" && (
+                                {user.role === "USER" && (
                                     <>
                                         <Link href="/bookings" className="text-gray-700 hover:text-indigo-600">
                                             My Bookings
@@ -40,7 +51,7 @@ export default function Navbar() {
                                     </>
                                 )}
 
-                                {session.user.role === "PROVIDER" && (
+                                {user.role === "PROVIDER" && (
                                     <>
                                         <Link href="/provider/dashboard" className="text-gray-700 hover:text-indigo-600">
                                             Dashboard
@@ -48,9 +59,9 @@ export default function Navbar() {
                                         <Link href="/provider/edit" className="text-gray-700 hover:text-indigo-600">
                                             Edit Profile
                                         </Link>
-                                        <span className="text-sm text-amber-500">
-                                            {session.user.verified ? "Verified" : "Pending Verification"}
-                                        </span>
+                                        {/* <span className="text-sm text-amber-500">
+                                            {user.verified ? "Verified" : "Pending Verification"}
+                                        </span> */}
                                     </>
                                 )}
 
@@ -89,7 +100,7 @@ export default function Navbar() {
                     <Link href="/services" className="block text-gray-700 hover:text-indigo-600">
                         Browse Services
                     </Link>
-                    {session && session.user.role === "USER" && (
+                    {session && user.role === "USER" && (
                         <>
                             <Link href="/bookings" className="block text-gray-700 hover:text-indigo-600">
                                 My Bookings
@@ -99,7 +110,7 @@ export default function Navbar() {
                             </Link>
                         </>
                     )}
-                    {session && session.user.role === "PROVIDER" && (
+                    {session && user.role === "PROVIDER" && (
                         <>
                             <Link href="/provider/dashboard" className="block text-gray-700 hover:text-indigo-600">
                                 Dashboard
@@ -107,9 +118,9 @@ export default function Navbar() {
                             <Link href="/provider/edit" className="block text-gray-700 hover:text-indigo-600">
                                 Edit Profile
                             </Link>
-                            <span className="block text-sm text-amber-500">
-                                {session.user.verified ? "Verified" : "Pending Verification"}
-                            </span>
+                            {/* <span className="block text-sm text-amber-500">
+                                {user.verified ? "Verified" : "Pending Verification"}
+                            </span> */}
                         </>
                     )}
                     {!session && (

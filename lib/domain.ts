@@ -33,7 +33,8 @@ export async function getCurrentUser() {
         name: user.name,
         email: user.email,
         image: user.email,
-        role: user.role
+        role: user.role,
+        
     }
 
 
