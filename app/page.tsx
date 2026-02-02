@@ -1,4 +1,5 @@
 import AuthButton from "@/components/ui/auth-button";
+import BecomeProviderForm from "@/components/ui/become-provider-form";
 import { getCurrentUser } from "@/lib/domain";
 
 export default async function Home() {
@@ -13,6 +14,9 @@ export default async function Home() {
   return (
     <>
       Welcome {user.name}, this is the best service app in Nepal
+      <div>
+        <BecomeProviderForm />
+      </div>
     </>
   );
 }
