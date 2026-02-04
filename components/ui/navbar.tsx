@@ -5,13 +5,17 @@ import { useSession } from "@/lib/auth-client";
 import { Button } from "./button";
 import { useEffect, useState } from "react";
 import { getCurrentUserAction } from "@/lib/actions/actions";
+import { Role } from "@/app/generated/prisma/enums";
 
 
 interface UserProps {
     id: string;
     name: string | null;
     email: string | null;
-    role: "USER" | "PROVIDER";
+    role: Role;
+    professionalProfile: {
+        verified: boolean;
+    } | null;
 }
 
 
@@ -41,14 +45,14 @@ export default function Navbar() {
                         <Link href="/">Home</Link>
                         <Link href="/services">Browse</Link>
 
-                        {user?.role === "USER" && (
+                        {session && user?.role === "USER" && (
                             <>
                                 <Link href="/bookings">My Bookings</Link>
                                 <Link href="/profile">Profile</Link>
                             </>
                         )}
 
-                        {user?.role === "PROVIDER" && (
+                        {session && user?.role === "PROVIDER" && (
                             <>
                                 <Link href="/provider/dashboard">Dashboard</Link>
                                 <Link href="/provider/edit">Edit Profile</Link>
@@ -60,6 +64,21 @@ export default function Navbar() {
                         ) : (
                             <Button>Login</Button>
                         )}
+
+                        {session && user?.role === "PROVIDER" && (
+                            user.professionalProfile?.verified ? (
+                                <span className="text-green-600 font-medium">
+                                    ✔ Verified Provider
+                                </span>
+                            ) : (
+                                <span className="text-yellow-500 font-medium">
+                                    ⏳ Verification Pending
+                                </span>
+                            )
+                        )}
+
+
+
                     </div>
 
                     <button

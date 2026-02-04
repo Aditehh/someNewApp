@@ -34,7 +34,11 @@ export async function getCurrentUser() {
         email: user.email,
         image: user.email,
         role: user.role,
-        
+
+        professionalProfile: user.professionalProfile ? {
+            verified: user.professionalProfile.verified
+        } : null
+
     }
 
 

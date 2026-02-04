@@ -28,21 +28,25 @@ export async function becomeProviderAction(formdata: FormData): Promise<void> {
 
 
 export async function getCurrentUserAction() {
-    const session = await auth.api.getSession({
-        headers: await headers(),
-    });
+    // const session = await auth.api.getSession({
+    //     headers: await headers(),
+    // });
 
-    if (!session) return null;
+    // if (!session) return null;
 
-    const user = await prisma.user.findUnique({
-        where: { id: session.user.id },
-        select: {
-            id: true,
-            name: true,
-            email: true,
-            role: true,
-        },
-    });
+    // const user = await prisma.user.findUnique({
+    //     where: { id: session.user.id },
+    //     select: {
+    //         id: true,
+    //         name: true,
+    //         email: true,
+    //         role: true,
+    //         // professionalProfile: 
+    //         professionalProfile: true,
 
-    return user;
+    //     },
+    // });
+
+    // return user;
+    return getCurrentUser();
 }
