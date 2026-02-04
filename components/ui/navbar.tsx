@@ -28,7 +28,7 @@ getCurrentUserAction().then(setUser);
                     <Link href="/" className="text-indigo-700 font-bold text-2xl">
                         Nepali Services
                     </Link>
-
+   
                     {/* Desktop Links */}
                     <div className="hidden md:flex space-x-6 items-center">
                         <Link href="/" className="text-gray-700 hover:text-indigo-600">
