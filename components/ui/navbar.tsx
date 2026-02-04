@@ -26,12 +26,17 @@ export default function Navbar() {
 
     useEffect(() => {
         if (!session) {
+
             setUser(null);
             return;
+
         }
 
         getCurrentUserAction().then(setUser);
+
+
     }, [session]);
+
 
     return (
         <nav className="bg-white shadow-md sticky top-0 z-50">
@@ -49,6 +54,7 @@ export default function Navbar() {
                             <>
                                 <Link href="/bookings">My Bookings</Link>
                                 <Link href="/profile">Profile</Link>
+                                <Link href={"/dashboard"}> Dashboard</Link>
                             </>
                         )}
 
@@ -59,23 +65,25 @@ export default function Navbar() {
                             </>
                         )}
 
+                        {session && user?.role === "PROVIDER" && (
+                            user.professionalProfile?.verified ? (
+                                <span className="text-green-600 font-medium">
+                                    Verified Provider
+                                </span>
+                            ) : (
+                                <span className="text-yellow-500 font-medium">
+                                    Verification Pending
+                                </span>
+                            )
+                        )}
+
                         {session ? (
                             <Button variant="destructive">Logout</Button>
                         ) : (
                             <Button>Login</Button>
                         )}
 
-                        {session && user?.role === "PROVIDER" && (
-                            user.professionalProfile?.verified ? (
-                                <span className="text-green-600 font-medium">
-                                    ✔ Verified Provider
-                                </span>
-                            ) : (
-                                <span className="text-yellow-500 font-medium">
-                                    ⏳ Verification Pending
-                                </span>
-                            )
-                        )}
+
 
 
 

@@ -62,18 +62,21 @@ export default function BecomeProviderForm() {
 
       <Input
         name="bio"
+        placeholder='bio'
         value={bio}
         onChange={(e) => setBio(e.target.value)}
       />
 
       <Input
         name="experience"
+        placeholder='experience'
         type="number"
         value={experience}
         onChange={(e) => setExperience(e.target.value)}
       />
 
       <Button type="submit" disabled={isdisabled}>Become a provider</Button>
+      
     </form>
 
   )
