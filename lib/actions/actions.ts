@@ -50,6 +50,20 @@ export async function getCurrentUserAction() {
 
 
 export async function submitVerificationRequestAction(formdata: FormData) {
-    const documentType = formdata.get("documentType") as string;
-    const file = formdata.get("document")
+    const documentType = formdata.get("documentType")?.toString();
+    const file = formdata.get("document") as File | null;
+
+    if (!documentType || !file)
+        throw new Error("Missing fields")
+
+    const documentUrl = await uploadDocument(file);
+
+    await submitVerificationRequest({
+        documentType,
+        documentUrl
+    })
+
+
+
+
 }

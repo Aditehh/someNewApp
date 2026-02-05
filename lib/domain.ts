@@ -37,6 +37,7 @@ export async function getCurrentUser() {
         role: user.role,
 
         professionalProfile: user.professionalProfile ? {
+            id: user.professionalProfile.id,
             verified: user.professionalProfile.verified,
             location: user.professionalProfile.location,
             experience: user.professionalProfile.experience
@@ -122,9 +123,24 @@ export async function approveProviderVerification(providerProfileId: number) {
 }
 
 
-export async function submitVerificationRequest(input) {
-    const authUser= await getCurrentUser();
-    if(!authUser) throw new Error("unauthorized");
-    
+export async function submitVerificationRequest(input: {
+    documentType: string,
+    documentUrl: string
+}) {
+    const authUser = await getCurrentUser();
+    if (!authUser) throw new Error("unauthorized");
+
+    if (authUser.role !== "PROVIDER") throw new Error("unauthenticated");
+    if (!authUser.professionalProfile) throw new Error("Not a professional Provider")
+
+
+    return prisma.providerVerification.create({
+        data: {
+            providerId: authUser.professionalProfile.id,    
+            documentType: input.documentType,
+            documentUrl: input.documentUrl
+        }
+    })
+
 }
 
