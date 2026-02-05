@@ -3,10 +3,7 @@
 import { becomeProvider } from "../domain";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "../domain";
-import { string } from "better-auth";
-import { auth } from "../auth";
-import { headers } from "next/headers";
-import prisma from "../db";
+import { submitVerificationRequest } from "../domain";
 
 export async function becomeProviderAction(formdata: FormData): Promise<void> {
     const location = formdata.get("location")?.toString();
@@ -49,4 +46,10 @@ export async function getCurrentUserAction() {
 
     // return user;
     return getCurrentUser();
+}
+
+
+export async function submitVerificationRequestAction(formdata: FormData) {
+    const documentType = formdata.get("documentType") as string;
+    const file = formdata.get("document")
 }

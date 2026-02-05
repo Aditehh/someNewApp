@@ -1,5 +1,6 @@
 // app/provider/dashboard/page.tsx
 import Navbar from "@/components/ui/navbar";
+import ProviderVerificationForm from "@/components/ui/provider-verification-form";
 import { getCurrentUser } from "@/lib/domain";
 import { redirect } from "next/navigation";
 
@@ -66,6 +67,7 @@ export default async function ProviderDashboard() {
                             <h2 className="text-lg font-semibold text-amber-800">
                                 Verification in progress
                             </h2>
+                            <ProviderVerificationForm />
                             <p className="text-sm text-amber-700 mt-1">
                                 Your profile is under review. You’ll be notified once verified.
                             </p>

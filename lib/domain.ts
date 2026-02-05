@@ -122,3 +122,9 @@ export async function approveProviderVerification(providerProfileId: number) {
 }
 
 
+export async function submitVerificationRequest(input) {
+    const authUser= await getCurrentUser();
+    if(!authUser) throw new Error("unauthorized");
+    
+}
+
