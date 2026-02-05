@@ -78,7 +78,7 @@ export async function becomeProvider(input: {
                     bio: input.bio,
                     experience: input.experience,
                 }
-                
+
             }
 
         }
