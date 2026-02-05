@@ -1,6 +1,7 @@
 import prisma from './db';
 import { auth } from './auth';
 import { headers } from 'next/headers';
+import { getCurrentUserAction } from './actions/actions';
 
 
 export async function getCurrentUser() {
@@ -101,3 +102,23 @@ export async function becomeProvider(input: {
 
     return profile;
 }
+
+
+export async function approveProviderVerification(providerProfileId: number) {
+    const authUser = await getCurrentUser();
+    if (!authUser) return null;
+
+    if (authUser.role !== "ADMIN") throw new Error("Forbidden")
+
+    return prisma.professionalProfile.update({
+        where: {
+            id: providerProfileId,
+        },
+        data: {
+            verified: true
+        }
+    })
+
+}
+
+
