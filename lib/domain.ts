@@ -72,11 +72,13 @@ export async function becomeProvider(input: {
             role: "PROVIDER",
 
             professionalProfile: {
+
                 update: {
                     location: input.location,
                     bio: input.bio,
                     experience: input.experience,
                 }
+                
             }
 
         }
