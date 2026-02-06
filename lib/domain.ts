@@ -124,9 +124,12 @@ export async function approveProviderVerification(providerProfileId: number) {
 }
 
 
-export async function submitVerificationRequest(
+export async function submitVerificationRequest(input: {
+
     documentType: VerificationDocumentType,
-    documentNumber: string) {
+    documentNumber: string
+}) {
+
     const authUser = await getCurrentUser();
     if (!authUser) throw new Error("unauthenticated");
 
@@ -148,8 +151,8 @@ export async function submitVerificationRequest(
     await prisma.providerVerification.create({
         data: ({
             providerId: providerProfile.id,
-            documentType,
-            documentNumber,
+            documentType: input.documentType,
+            documentNumber: input.documentNumber,
         })
     })
 

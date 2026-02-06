@@ -1,8 +1,9 @@
 "use server";
 
-import { becomeProvider } from "../domain";
+import { becomeProvider, submitVerificationRequest } from "../domain";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "../domain";
+import { VerificationDocumentType } from "@/app/generated/prisma/enums";
 
 export async function becomeProviderAction(formdata: FormData): Promise<void> {
     const location = formdata.get("location")?.toString();
@@ -47,6 +48,19 @@ export async function getCurrentUserAction() {
     return getCurrentUser();
 }
 
+export async function submitVerificationRequestAction(formdata: FormData) {
+    const documentType = formdata.get("documentType")?.toString() as VerificationDocumentType;
+    const documentNumber = formdata.get("documentNumber")?.toString();
+
+    if (!documentNumber || !documentType) {
+        throw new Error("missing fields")
+    }
+
+    await submitVerificationRequest({
+        documentType,
+        documentNumber
+    })
+}
 
 
 
