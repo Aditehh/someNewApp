@@ -64,9 +64,7 @@ export default async function ProviderDashboard() {
                     {/* CTA */}
                     {!verified && (
                         <div className="bg-amber-50 border border-amber-200 rounded-xl p-6">
-                            <h2 className="text-lg font-semibold text-amber-800">
-                                Verification in progress
-                            </h2>
+                            
                             <ProviderVerificationForm />
                             <p className="text-sm text-amber-700 mt-1">
                                 Your profile is under review. You’ll be notified once verified.

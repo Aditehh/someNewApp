@@ -147,8 +147,17 @@ export async function submitVerificationRequest(input: {
 
     if (!providerProfile) throw new Error("provider not found");
 
+    const existingRequest = await prisma.providerVerification.findUnique({
+        where: {
+            providerId: providerProfile.id
+        }
+    })
 
-    await prisma.providerVerification.create({
+    if (existingRequest && existingRequest.status == "PENDING") {
+        throw new Error("User already has a request that is pending ")
+    }
+
+    return await prisma.providerVerification.create({
         data: ({
             providerId: providerProfile.id,
             documentType: input.documentType,
