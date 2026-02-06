@@ -2,6 +2,7 @@ import prisma from './db';
 import { auth } from './auth';
 import { headers } from 'next/headers';
 import { getCurrentUserAction } from './actions/actions';
+import { VerificationDocumentType } from '@/app/generated/prisma/enums';
 
 
 export async function getCurrentUser() {
@@ -123,24 +124,5 @@ export async function approveProviderVerification(providerProfileId: number) {
 }
 
 
-export async function submitVerificationRequest(input: {
-    documentType: string,
-    documentUrl: string
-}) {
-    const authUser = await getCurrentUser();
-    if (!authUser) throw new Error("unauthorized");
 
-    if (authUser.role !== "PROVIDER") throw new Error("unauthenticated");
-    if (!authUser.professionalProfile) throw new Error("Not a professional Provider")
-
-
-    return prisma.providerVerification.create({
-        data: {
-            providerId: authUser.professionalProfile.id,    
-            documentType: input.documentType,
-            documentUrl: input.documentUrl
-        }
-    })
-
-}
 

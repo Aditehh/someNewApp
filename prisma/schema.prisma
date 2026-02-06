@@ -154,12 +154,12 @@ enum BookingStatus {
 }
 
 model ProviderVerification {
-  id              Int                      @id @default(autoincrement())
+  id              Int                @id @default(autoincrement())
   providerId      Int
   documentUrl     String
-  documentType    VerificationDocumentType
-  status          VerificationStatus       @default(PENDING)
-  submittedAt     DateTime                 @default(now())
+  documentNumber  String
+  status          VerificationStatus @default(PENDING)
+  submittedAt     DateTime           @default(now())
   reviewedAt      DateTime?
   rejectionReason String?
 

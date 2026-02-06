@@ -3,7 +3,6 @@
 import { becomeProvider } from "../domain";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "../domain";
-import { submitVerificationRequest } from "../domain";
 
 export async function becomeProviderAction(formdata: FormData): Promise<void> {
     const location = formdata.get("location")?.toString();
@@ -49,21 +48,5 @@ export async function getCurrentUserAction() {
 }
 
 
-export async function submitVerificationRequestAction(formdata: FormData) {
-    const documentType = formdata.get("documentType")?.toString();
-    const file = formdata.get("document") as File | null;
-
-    if (!documentType || !file)
-        throw new Error("Missing fields")
-
-    const documentUrl = await uploadDocument(file);
-
-    await submitVerificationRequest({
-        documentType,
-        documentUrl
-    })
 
 
-
-
-}
