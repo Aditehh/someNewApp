@@ -2,7 +2,8 @@ import prisma from './db';
 import { auth } from './auth';
 import { headers } from 'next/headers';
 import { getCurrentUserAction } from './actions/actions';
-import { VerificationDocumentType } from '@/app/generated/prisma/enums';
+import { VerificationDocumentType, VerificationStatus } from '@/app/generated/prisma/enums';
+import { ProfessionalProfileScalarFieldEnum } from '@/app/generated/prisma/internal/prismaNamespace';
 
 
 export async function getCurrentUser() {
@@ -41,12 +42,14 @@ export async function getCurrentUser() {
             id: user.professionalProfile.id,
             verified: user.professionalProfile.verified,
             location: user.professionalProfile.location,
-            experience: user.professionalProfile.experience
+            experience: user.professionalProfile.experience,
+            VerificationStatus: user.professionalProfile.status
+
+
+
         } : null
 
     }
-
-
 }
 
 
@@ -73,6 +76,7 @@ export async function becomeProvider(input: {
         data: {
 
             role: "PROVIDER",
+            
 
             professionalProfile: {
 
@@ -90,6 +94,7 @@ export async function becomeProvider(input: {
     const profile = await prisma.professionalProfile.create({
         data: {
             userId,
+            status: "NOT_REQUESTED",
             location: input.location,
             experience: input.experience,
             bio: input.bio,
@@ -99,7 +104,10 @@ export async function becomeProvider(input: {
 
     await prisma.user.update({
         where: { id: userId },
-        data: { role: "PROVIDER" }
+        data: {
+            role: "PROVIDER",
+        },
+
     });
 
     return profile;
@@ -163,7 +171,8 @@ export async function submitVerificationRequest(input: {
             providerId: providerProfile.id,
             documentType: input.documentType,
             documentNumber: input.documentNumber,
-            status: "PENDING"
+            status: "PENDING",
+
         })
     })
 

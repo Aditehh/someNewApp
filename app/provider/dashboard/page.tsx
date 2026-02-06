@@ -4,12 +4,15 @@ import ProviderVerificationForm from "@/components/ui/provider-verification-form
 import { getCurrentUser } from "@/lib/domain";
 import { redirect } from "next/navigation";
 
+
 export default async function ProviderDashboard() {
     const user = await getCurrentUser();
     if (!user) redirect("/");
     if (user.role !== "PROVIDER") redirect("/dashboard");
 
     const verified = user.professionalProfile?.verified;
+
+    const status = user.professionalProfile?.VerificationStatus
 
     return (
         <>
@@ -29,8 +32,8 @@ export default async function ProviderDashboard() {
 
                         <span
                             className={`px-4 py-1 rounded-full text-sm font-medium ${verified
-                                    ? "bg-emerald-100 text-emerald-700"
-                                    : "bg-amber-100 text-amber-700"
+                                ? "bg-emerald-100 text-emerald-700"
+                                : "bg-amber-100 text-amber-700"
                                 }`}
                         >
                             {verified ? "Verified Provider" : "Pending Verification"}
@@ -62,15 +65,22 @@ export default async function ProviderDashboard() {
                     </div>
 
                     {/* CTA */}
-                    {!verified && (
+                    {!verified && (status === "NOT_REQUESTED" || status === "REJECTED") && (
                         <div className="bg-amber-50 border border-amber-200 rounded-xl p-6">
-                            
+
                             <ProviderVerificationForm />
                             <p className="text-sm text-amber-700 mt-1">
                                 Your profile is under review. You'll be notified once verified.
                             </p>
                         </div>
                     )}
+                    {
+                        status === "PENDING" && (
+                            <p className="text-sm text-amber-700 mt-1">
+                                Your profile is under review. You'll be notified once verified.
+                            </p>
+                        )
+                    }
                 </div>
             </div>
         </>

@@ -21,9 +21,10 @@ model User {
   sessions      Session[]
   accounts      Account[]
 
-  professionalProfile ProfessionalProfile? // optional link if user is a provider
-  bookings            Booking[] // bookings made by user (as customer)
-  reviews             Review[] // reviews made by user (as customer)
+  professionalProfile   ProfessionalProfile? // optional link if user is a provider
+  bookings              Booking[] // bookings made by user (as customer)
+  reviews               Review[] // reviews made by user (as customer)
+  providerVerifications ProviderVerification[]
 
   @@unique([email])
   @@map("user")
@@ -79,13 +80,14 @@ model Verification {
 // Domain Models
 
 model ProfessionalProfile {
-  id         Int      @id @default(autoincrement())
-  userId     String   @unique // links to Better Auth User
+  id         Int                @id @default(autoincrement())
+  userId     String             @unique // links to Better Auth User
   bio        String?
   location   String
   experience Int
-  verified   Boolean  @default(false)
-  createdAt  DateTime @default(now())
+  verified   Boolean            @default(false)
+  createdAt  DateTime           @default(now())
+  status     VerificationStatus @default(PENDING)
 
   user                  User                   @relation(fields: [userId], references: [id])
   services              Service[]
@@ -144,6 +146,7 @@ enum Role {
   USER
   PROVIDER
   ADMIN
+  
 }
 
 enum BookingStatus {
@@ -164,9 +167,12 @@ model ProviderVerification {
   rejectionReason String?
 
   provider ProfessionalProfile @relation(fields: [providerId], references: [id])
+  user     User?               @relation(fields: [userId], references: [id])
+  userId   String?
 }
 
 enum VerificationStatus {
+  NOT_REQUESTED
   PENDING
   APPROVED
   REJECTED

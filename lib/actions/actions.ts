@@ -69,7 +69,8 @@ export async function submitVerificationRequestAction(formdata: FormData) {
 
     await submitVerificationRequest({
         documentType,
-        documentNumber
+        documentNumber,
+        
     });
 
     // return {success: true}

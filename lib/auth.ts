@@ -20,3 +20,9 @@ export const auth = betterAuth({
 
 },
 );
+
+
+
+
+// i made some changes on the schema of the prisma 
+// i added the verification status 
