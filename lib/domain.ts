@@ -124,5 +124,35 @@ export async function approveProviderVerification(providerProfileId: number) {
 }
 
 
+export async function submitVerificationRequest(
+    documentType: VerificationDocumentType,
+    documentNumber: string) {
+    const authUser = await getCurrentUser();
+    if (!authUser) throw new Error("unauthenticated");
 
+    if (authUser.role !== "PROVIDER") throw new Error("must be a provider");
+
+    if (authUser.professionalProfile?.verified) {
+        throw new Error("Already verified")
+    };
+
+    const providerProfile = await prisma.professionalProfile.findUnique({
+        where: {
+            userId: authUser.id,
+        }
+    })
+
+    if (!providerProfile) throw new Error("provider not found");
+
+
+    await prisma.providerVerification.create({
+        data: ({
+            providerId: providerProfile.id,
+            documentType,
+            documentNumber,
+        })
+    })
+
+
+}
 
