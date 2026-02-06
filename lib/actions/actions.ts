@@ -49,17 +49,26 @@ export async function getCurrentUserAction() {
 }
 
 export async function submitVerificationRequestAction(formdata: FormData) {
-    const documentType = formdata.get("documentType")?.toString() as VerificationDocumentType;
+    const rawType = formdata.get("documentType")
     const documentNumber = formdata.get("documentNumber")?.toString();
 
-    if (!documentNumber || !documentType) {
+    if (!documentNumber || !rawType) {
         throw new Error("missing fields")
+    }
+
+    const documentType = rawType.toString() as VerificationDocumentType;
+
+
+    if (!Object.values(VerificationDocumentType).includes(documentType)) {
+        throw new Error("Invalid document type");
     }
 
     await submitVerificationRequest({
         documentType,
         documentNumber
     })
+
+    
 }
 
 
