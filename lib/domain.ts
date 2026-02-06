@@ -107,6 +107,7 @@ export async function becomeProvider(input: {
 
 
 export async function approveProviderVerification(providerProfileId: number) {
+
     const authUser = await getCurrentUser();
     if (!authUser) return null;
 
@@ -162,6 +163,7 @@ export async function submitVerificationRequest(input: {
             providerId: providerProfile.id,
             documentType: input.documentType,
             documentNumber: input.documentNumber,
+            status: "PENDING"
         })
     })
 

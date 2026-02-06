@@ -67,7 +67,7 @@ export default async function ProviderDashboard() {
                             
                             <ProviderVerificationForm />
                             <p className="text-sm text-amber-700 mt-1">
-                                Your profile is under review. You’ll be notified once verified.
+                                Your profile is under review. You'll be notified once verified.
                             </p>
                         </div>
                     )}

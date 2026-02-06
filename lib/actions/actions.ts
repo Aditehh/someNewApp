@@ -4,7 +4,6 @@ import { becomeProvider, submitVerificationRequest } from "../domain";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "../domain";
 import { VerificationDocumentType } from "@/app/generated/prisma/enums";
-import { success } from "better-auth";
 
 export async function becomeProviderAction(formdata: FormData): Promise<void> {
     const location = formdata.get("location")?.toString();
@@ -59,6 +58,8 @@ export async function submitVerificationRequestAction(formdata: FormData) {
 
     const documentType = rawType.toString() as VerificationDocumentType;
 
+    
+
 
     if (!Object.values(VerificationDocumentType).includes(documentType)) {
         throw new Error("Invalid document type");
@@ -71,7 +72,7 @@ export async function submitVerificationRequestAction(formdata: FormData) {
         documentNumber
     });
 
-    
+    // return {success: true}
 
     
 }
