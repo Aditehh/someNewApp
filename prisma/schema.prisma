@@ -146,7 +146,6 @@ enum Role {
   USER
   PROVIDER
   ADMIN
-  
 }
 
 enum BookingStatus {

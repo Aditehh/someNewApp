@@ -9,7 +9,7 @@ export default function HeroSection() {
     return (
         <>
             {/* Hero Section */}
-            <section className="flex flex-col items-center justify-center text-center py-24 px-4 bg-gradient-to-b from-indigo-50 to-indigo-100" >
+            <section className="flex flex-col items-center justify-center text-center py-24 px-4 bg-linear-to-b from-indigo-50 to-indigo-100" >
                 <h1 className="text-5xl font-bold text-indigo-700 mb-4">
                     Nepal's Local Services at Your Fingertips
                 </h1>

@@ -76,7 +76,7 @@ export async function becomeProvider(input: {
         data: {
 
             role: "PROVIDER",
-            
+
 
             professionalProfile: {
 
@@ -94,11 +94,12 @@ export async function becomeProvider(input: {
     const profile = await prisma.professionalProfile.create({
         data: {
             userId,
-            status: "NOT_REQUESTED",
             location: input.location,
             experience: input.experience,
             bio: input.bio,
-            verified: false
+            verified: false,
+            status: "NOT_REQUESTED",
+
         }
     });
 
@@ -153,6 +154,17 @@ export async function submitVerificationRequest(input: {
             userId: authUser.id,
         }
     })
+
+    if (providerProfile?.status === "NOT_REQUESTED") {
+        return prisma.professionalProfile.update({
+            where: {
+                userId: authUser.id,
+            },
+            data: {
+                status: "PENDING"
+            }
+        })
+    }
 
     if (!providerProfile) throw new Error("provider not found");
 
