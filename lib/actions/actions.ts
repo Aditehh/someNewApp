@@ -75,7 +75,7 @@ export async function submitVerificationRequestAction(formdata: FormData) {
     });
 
     // return {success: true}
-    // revalidatePath("/provider/dashboard")
+    revalidatePath("/provider/dashboard")
 
 
 }
