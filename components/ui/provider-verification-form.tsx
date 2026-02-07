@@ -17,7 +17,7 @@ export default function ProviderVerificationForm() {
         </select>
         <Input type="text" name='documentNumber' required placeholder='Enter your respective documents id' />
 
-        <Button >
+        <Button className='w-full' >
           Submit Request
         </Button>
 
