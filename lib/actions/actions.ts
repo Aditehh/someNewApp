@@ -5,6 +5,8 @@ import { redirect } from "next/navigation";
 import { getCurrentUser } from "../domain";
 import { VerificationDocumentType } from "@/app/generated/prisma/enums";
 import { revalidatePath } from "next/cache";
+import { rejectProviderVerification } from "../domain";
+import { string } from "better-auth";
 
 export async function becomeProviderAction(formdata: FormData): Promise<void> {
     const location = formdata.get("location")?.toString();
@@ -80,5 +82,12 @@ export async function submitVerificationRequestAction(formdata: FormData) {
 
 }
 
+export async function rejectProviderVerificationAction(formdata: FormData) {
+
+    const rejectionReason = formdata.get("rejectionReason") as string
+
+    await rejectProviderVerification(providerProfileId, {rejectionReason});
+
+}
 
 

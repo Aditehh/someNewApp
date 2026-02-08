@@ -288,7 +288,7 @@ export async function submitVerificationRequest(input: {
 
 
 
-export async function rejectProviderVerification(providerProfileId: number) {
+export async function rejectProviderVerification(providerProfileId: number, input: { rejectionReason: string }) {
 
     const authUser = await getCurrentUser();
     if (!authUser) throw new Error("Unauthenticated")
@@ -344,7 +344,7 @@ export async function rejectProviderVerification(providerProfileId: number) {
 
 }
 
-
+// hello my name is samikshya adhikari and i study here in pokhara in paschimanchal hospital poahs acadamy of nursing im am a very brilliant student and so prettyy oh my goddddddddddddddddd wahhhhhhyuyyyyyyuuuuuuu guuuuuuuuuuuuuuuuuuuuuuuu
 
 
 
