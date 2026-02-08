@@ -342,9 +342,6 @@ export async function rejectProviderVerification(providerProfileId: number) {
         }
     })
 
-
-
-
 }
 
 
