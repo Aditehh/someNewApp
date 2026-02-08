@@ -114,7 +114,10 @@ export async function becomeProvider(input: {
     return profile;
 }
 
+
+
 export async function approveProviderVerification(providerProfileId: number) {
+
     const authUser = await getCurrentUser();
     if (!authUser) throw new Error("Unauthenticated");
 
@@ -282,6 +285,60 @@ export async function submitVerificationRequest(input: {
     return verificationRequest;
 }
 
+
+
+
+export async function rejectProviderVerification(providerProfileId: number) {
+
+    const authUser = await getCurrentUser();
+    if (!authUser) throw new Error("Unauthenticated")
+
+    if (authUser.role !== "ADMIN") {
+        throw new Error("Forbidden");
+    }
+
+    const providerProfile = await prisma.professionalProfile.findUnique({
+        where: {
+            id: providerProfileId
+        }
+    });
+
+    if (!providerProfile) {
+        throw new Error("Provider Profile not found")
+    };
+
+    if (providerProfile.verified) {
+        throw new Error("Provider already verified")
+    };
+
+    const verificationRequest = await prisma.providerVerification.findUnique({
+        where: { providerId: providerProfile.id }
+    });
+
+    if (!verificationRequest || verificationRequest.status !== "PENDING") {
+        throw new Error("No pending verification request")
+    };
+
+    await prisma.providerVerification.update({
+        where: { id: verificationRequest.id },
+        data: {
+            status: "REJECTED",
+            reviewedAt: new Date()
+        }
+    });
+
+    await prisma.professionalProfile.update({
+        where: { id: providerProfile.id },
+        data: {
+            verified: false,
+            status: "REJECTED"
+        }
+    })
+
+
+
+
+}
 
 
 
