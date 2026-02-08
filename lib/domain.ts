@@ -114,23 +114,55 @@ export async function becomeProvider(input: {
     return profile;
 }
 
-
 export async function approveProviderVerification(providerProfileId: number) {
-
     const authUser = await getCurrentUser();
-    if (!authUser) return null;
+    if (!authUser) throw new Error("Unauthenticated");
 
-    if (authUser.role !== "ADMIN") throw new Error("Forbidden")
+    if (authUser.role !== "ADMIN") {
+        throw new Error("Forbidden");
+    }
 
-    return prisma.professionalProfile.update({
-        where: {
-            id: providerProfileId,
-        },
+    // 1️⃣ Get provider profile being approved
+    const providerProfile = await prisma.professionalProfile.findUnique({
+        where: { id: providerProfileId },
+    });
+
+    if (!providerProfile) {
+        throw new Error("Provider profile not found");
+    }
+
+    if (providerProfile.verified) {
+        throw new Error("Provider already verified");
+    }
+
+    // 2️⃣ Find pending verification request
+    const verificationRequest = await prisma.providerVerification.findUnique({
+        where: { providerId: providerProfile.id },
+    });
+
+    if (!verificationRequest || verificationRequest.status !== "PENDING") {
+        throw new Error("No pending verification request");
+    }
+
+    // 3️⃣ Approve verification request
+    await prisma.providerVerification.update({
+        where: { id: verificationRequest.id },
         data: {
-            verified: true
-        }
-    })
+            status: "APPROVED",
+            reviewedAt: new Date(),
+        },
+    });
 
+    // 4️⃣ Mark provider as verified
+    await prisma.professionalProfile.update({
+        where: { id: providerProfile.id },
+        data: {
+            verified: true,
+            status: "APPROVED",
+        },
+    });
+
+    return { success: true };
 }
 
 
@@ -249,3 +281,14 @@ export async function submitVerificationRequest(input: {
 
     return verificationRequest;
 }
+
+
+
+
+
+
+
+
+
+
+
