@@ -315,15 +315,22 @@ export async function rejectProviderVerification(providerProfileId: number) {
         where: { providerId: providerProfile.id }
     });
 
+    if (verificationRequest?.status == "REJECTED") {
+        throw new Error("Already rejected should make a new request again")
+    }
+
     if (!verificationRequest || verificationRequest.status !== "PENDING") {
         throw new Error("No pending verification request")
     };
+
+
 
     await prisma.providerVerification.update({
         where: { id: verificationRequest.id },
         data: {
             status: "REJECTED",
-            reviewedAt: new Date()
+            reviewedAt: new Date(),
+            rejectionReason: input.rejectionReason,
         }
     });
 
