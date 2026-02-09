@@ -361,28 +361,28 @@ export async function getPendingProviderVerifications() {
     const person = await prisma.providerVerification.findMany({
         where: {
             status: "PENDING",
-
             provider: {
                 verified: false,
-                status: "PENDING"
-            }
-
-
+                status: "PENDING",
+            },
         },
         include: {
             provider: {
                 include: {
                     user: {
-                        email: 
-                    }
-                }
-            }
+                        select: {
+                            email: true,
+                            name: true, // optional but useful
+                        },
+                    },
+                },
+            },
         },
-        orderBy: [
-            {
-                submittedAt: "desc"
-            }]
-    })
+        orderBy: {
+            submittedAt: "desc",
+        },
+    });
+
 
     return person;
 
