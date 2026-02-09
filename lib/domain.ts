@@ -355,48 +355,41 @@ export async function getPendingProviderVerifications() {
         throw new Error("forbidden")
     };
 
-    // const providerProfile = await prisma.professionalProfile.findUnique({
-    //     where: {
-    //         id: providerProfileId
-    //     }
-    // });
+    const providerProfile = await prisma.professionalProfile.findUnique({
+        where: {
+            id: 
+        }
+    });
 
-    // if (!providerProfile) {
-    //     throw new Error("Profile Profile not found")
-    // };
+    if (!providerProfile) {
+        throw new Error("Profile Profile not found")
+    };
 
-    // if (providerProfile.verified) {
-    //     throw new Error("already verified")
-    // };
+    if (providerProfile.verified) {
+        throw new Error("already verified")
+    };
 
-    // const verificationRequest = await prisma.providerVerification.findUnique({
-    //     where: { providerId: providerProfile.id }
-    // });
-
-    // if (verificationRequest?.status == "REJECTED") throw new Error("already rejected");
-
-    // if (!verificationRequest || verificationRequest.status !== "PENDING") {
-    //     throw new Error("no pending verification requests")
-    // };
+   
 
     prisma.providerVerification.findMany({
         where: {
             // id: verificationRequest.id,
             status: "PENDING",
-            
+            submittedAt: {},
+            providerId: ,
+            provider: {
+                user: {
+                    name: authUser.name,
+                    email: authUser.email
+                }
+            }
+
 
         },
 
     })
 
-    prisma.professionalProfile.findMany({
-        where: {
-            // id: providerProfileId,
-            status: "PENDING",
-            
-            verified: false
-        }
-    })
+
 }
 
 
