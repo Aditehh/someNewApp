@@ -4,6 +4,7 @@ import RejectProviderVerificationButton from "@/components/ui/reject-verificatio
 
 
 export default async function AdminVerificationsPage() {
+
     const requests = await getPendingProviderVerifications();
 
     return (
@@ -35,8 +36,8 @@ export default async function AdminVerificationsPage() {
                     </div>
 
                     <div className="flex gap-3">
-                        <ApproveButton providerProfileId={req.provider.id} />
-                        <RejectFormAdmin providerProfileId={req.provider.id} />
+                        <ApproveVerificationButton providerProfileId={req.provider.id} />
+                        <RejectProviderVerificationButton providerProfileId={req.provider.id} />
                     </div>
                 </div>
             ))}
