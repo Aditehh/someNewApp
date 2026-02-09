@@ -107,7 +107,21 @@ export async function rejectProviderVerificationAction(formdata: FormData) {
 }
 
 
-export async function approveProviderVerificationAction(providerProfileId: number) {
+export async function approveProviderVerificationAction(formdata: FormData) {
+
+    const rawId = formdata.get("providerProfileId");
+
+    if (!rawId) {
+        throw new Error("missing providerId")
+    }
+
+    const providerProfileId = Number(rawId)
+
+
+    if (isNaN(providerProfileId)) throw new Error("Invalid providerProfileId")
+
     await approveProviderVerification(providerProfileId);
+
+    revalidatePath("/admin/verification")
 
 }

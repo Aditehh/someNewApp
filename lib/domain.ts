@@ -347,8 +347,57 @@ export async function rejectProviderVerification(providerProfileId: number, inpu
 
 
 
+export async function getPendingProviderVerifications() {
+    const authUser = await getCurrentUser();
+    if (!authUser) throw new Error("Unauthenticated")
 
+    if (authUser.role !== "ADMIN") {
+        throw new Error("forbidden")
+    };
 
+    // const providerProfile = await prisma.professionalProfile.findUnique({
+    //     where: {
+    //         id: providerProfileId
+    //     }
+    // });
+
+    // if (!providerProfile) {
+    //     throw new Error("Profile Profile not found")
+    // };
+
+    // if (providerProfile.verified) {
+    //     throw new Error("already verified")
+    // };
+
+    // const verificationRequest = await prisma.providerVerification.findUnique({
+    //     where: { providerId: providerProfile.id }
+    // });
+
+    // if (verificationRequest?.status == "REJECTED") throw new Error("already rejected");
+
+    // if (!verificationRequest || verificationRequest.status !== "PENDING") {
+    //     throw new Error("no pending verification requests")
+    // };
+
+    prisma.providerVerification.findMany({
+        where: {
+            // id: verificationRequest.id,
+            status: "PENDING",
+            
+
+        },
+
+    })
+
+    prisma.professionalProfile.findMany({
+        where: {
+            // id: providerProfileId,
+            status: "PENDING",
+            
+            verified: false
+        }
+    })
+}
 
 
 

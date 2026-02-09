@@ -1,16 +1,24 @@
-import React from 'react'
-import { approveProviderVerificationAction } from '@/lib/actions/actions'
-import { Button } from './button'
+"use client";
 
-export default function ApproveVerificationButton({ providerProfileId }: { providerProfileId: number }) {
-    const handleclick = async () => {
-        await approveProviderVerificationAction(providerProfileId);
-    }
+import { approveProviderVerificationAction } from "@/lib/actions/actions";
+import { Button } from "./button";
+import { Input } from "./input";
+
+export default function ApproveVerificationButton({
+    providerProfileId,
+}: {
+    providerProfileId: number;
+}) {
     return (
-        <div>
-            <Button variant={'outline'} onClick={() => handleclick}>
+        <form action={approveProviderVerificationAction}>
+            <Input
+                type="hidden"
+                name="providerProfileId"
+                value={providerProfileId}
+            />
+            <Button type="submit" variant="outline">
                 Approve
             </Button>
-        </div>
-    )
+        </form>
+    );
 }
