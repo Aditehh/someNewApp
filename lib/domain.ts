@@ -341,10 +341,10 @@ export async function rejectProviderVerification(providerProfileId: number, inpu
             status: "REJECTED"
         }
     })
+    return { success: true }
 
 }
 
-// hello my name is samikshya adhikari and i study here in pokhara in paschimanchal hospital poahs acadamy of nursing im am a very brilliant student and so prettyy oh my goddddddddddddddddd wahhhhhhyuyyyyyyuuuuuuu guuuuuuuuuuuuuuuuuuuuuuuu
 
 
 

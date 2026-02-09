@@ -84,10 +84,25 @@ export async function submitVerificationRequestAction(formdata: FormData) {
 
 export async function rejectProviderVerificationAction(formdata: FormData) {
 
-    const rejectionReason = formdata.get("rejectionReason") as string
-    const providerProfileId = formdata.get("providerProfileId") as number;
+    const rawId = formdata.get("providerProfileId");
+    const rejectionReason = formdata.get("rejectionReason");
 
-    await rejectProviderVerification(providerProfileId, {rejectionReason});
+    if (!rawId || !rejectionReason) {
+        throw new Error("Missing fields")
+    }
+
+    const providerProfileId = Number(rawId);
+
+    if (Number.isNaN(providerProfileId)) {
+        throw new Error("Invalid ProviderProfileId")
+    }
+
+    if (rejectionReason.toString().trim().length < 3) {
+        throw new Error("Rejection reason too short")
+    }
+
+
+    await rejectProviderVerification(providerProfileId, { rejectionReason: rejectionReason.toString() });
 
 }
 
