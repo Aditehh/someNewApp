@@ -355,43 +355,24 @@ export async function getPendingProviderVerifications() {
         throw new Error("forbidden")
     };
 
-    const providerProfile = await prisma.professionalProfile.findUnique({
+
+
+
+    const person = await prisma.providerVerification.findMany({
         where: {
-            id: 
-        }
-    });
-
-    if (!providerProfile) {
-        throw new Error("Profile Profile not found")
-    };
-
-    if (providerProfile.verified) {
-        throw new Error("already verified")
-    };
-
-   
-
-    prisma.providerVerification.findMany({
-        where: {
-            // id: verificationRequest.id,
             status: "PENDING",
-            submittedAt: {},
-            providerId: ,
             provider: {
-                user: {
-                    name: authUser.name,
-                    email: authUser.email
-                }
+                verified: false,
             }
-
-
+           
+            
         },
-
+        orderBy: [
+            {
+                submittedAt: "desc"
+            }]
     })
-
+    return person;
 
 }
-
-
-
 
