@@ -1,6 +1,6 @@
 "use server";
 
-import { becomeProvider, submitVerificationRequest } from "../domain";
+import { approveProviderVerification, becomeProvider, submitVerificationRequest } from "../domain";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "../domain";
 import { VerificationDocumentType } from "@/app/generated/prisma/enums";
@@ -107,3 +107,7 @@ export async function rejectProviderVerificationAction(formdata: FormData) {
 }
 
 
+export async function approveProviderVerificationAction(providerProfileId: number) {
+    await approveProviderVerification(providerProfileId);
+
+}
