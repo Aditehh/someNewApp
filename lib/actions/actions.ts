@@ -85,6 +85,7 @@ export async function submitVerificationRequestAction(formdata: FormData) {
 export async function rejectProviderVerificationAction(formdata: FormData) {
 
     const rejectionReason = formdata.get("rejectionReason") as string
+    const providerProfileId = formdata.get("providerProfileId") as number;
 
     await rejectProviderVerification(providerProfileId, {rejectionReason});
 

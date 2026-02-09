@@ -5,7 +5,8 @@ export default function RejectionFormAdmin() {
     return (
         <div>
             <form action={rejectProviderVerificationAction}>
-                <input type="text" name='rejectionReason' placeholder='whats the reason for the rejection?' />
+                <input type="hidden" name='providerProfileId'  />
+                <input type="text" required name='rejectionReason' placeholder='whats the reason for the rejection?' />
                 <button type='submit'>verify rejection reason</button>
             </form>
         </div>
