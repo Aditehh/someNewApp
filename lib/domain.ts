@@ -169,65 +169,6 @@ export async function approveProviderVerification(providerProfileId: number) {
 }
 
 
-// export async function submitVerificationRequest(input: {
-
-//     documentType: VerificationDocumentType,
-//     documentNumber: string
-// }) {
-
-//     const authUser = await getCurrentUser();
-//     if (!authUser) throw new Error("unauthenticated");
-
-//     if (authUser.role !== "PROVIDER") throw new Error("must be a provider");
-
-//     if (authUser.professionalProfile?.verified) {
-//         throw new Error("Already verified")
-//     };
-
-//     const providerProfile = await prisma.professionalProfile.findUnique({
-//         where: {
-//             userId: authUser.id,
-//         }
-//     })
-
-
-
-//     if (!providerProfile) throw new Error("provider not found");
-
-//     const existingRequest = await prisma.providerVerification.findUnique({
-//         where: {
-//             providerId: providerProfile.id
-//         }
-//     })
-
-//     if (existingRequest && existingRequest.status == "PENDING") {
-//         throw new Error("User already has a request that is pending ")
-//     }
-
-//     if (providerProfile?.status === "NOT_REQUESTED") {
-//         return prisma.professionalProfile.update({
-//             where: {
-//                 userId: authUser.id,
-//             },
-//             data: {
-//                 status: "PENDING"
-//             }
-//         })
-//     }
-
-//     return await prisma.providerVerification.create({
-//         data: ({
-//             providerId: providerProfile.id,
-//             documentType: input.documentType,
-//             documentNumber: input.documentNumber,
-//             status: "PENDING",
-
-//         })
-//     })
-
-
-
-// }
 
 
 export async function submitVerificationRequest(input: {
