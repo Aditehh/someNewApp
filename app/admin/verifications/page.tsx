@@ -19,7 +19,7 @@ export default async function AdminVerificationsPage() {
 
             {requests.map((req) => (
                 <div
-                    key={req.id}
+                    key={req.id}       
                     className="border rounded-lg p-4 space-y-3 bg-white"
                 >
                     <div>
