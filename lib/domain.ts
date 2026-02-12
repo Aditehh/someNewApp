@@ -329,3 +329,32 @@ export async function getPendingProviderVerifications() {
 
 }
 
+export async function CreateService(providerProfileId: number) {
+
+    const authUser = await getCurrentUser();
+    if (!authUser) throw new Error("Unauthenticated");
+
+    if (authUser.role !== "PROVIDER") throw new Error("only provider has access")
+
+    const providerProfile = await prisma.professionalProfile.findUnique({
+        where: {
+            id: providerProfileId
+        }
+    });
+
+    if (!providerProfile) throw new Error("Profile not found");
+
+   
+
+    const createprofessionalservice = await prisma.service.create({
+        data: {
+            id,
+
+
+        }
+
+    })
+
+
+
+}
