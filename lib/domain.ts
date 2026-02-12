@@ -336,22 +336,21 @@ export async function CreateService(providerProfileId: number) {
 
     if (authUser.role !== "PROVIDER") throw new Error("only provider has access")
 
-    const providerProfile = await prisma.professionalProfile.findUnique({
+    const ServiceProviderProfile = await prisma.professionalProfile.findUnique({
         where: {
-            id: providerProfileId
+            userId: authUser.id
         }
     });
 
-    if (!providerProfile) throw new Error("Profile not found");
+    if(!ServiceProviderProfile) throw new Error("provider Not found")
 
-   
+
+
+
+
 
     const createprofessionalservice = await prisma.service.create({
-        data: {
-            id,
 
-
-        }
 
     })
 
