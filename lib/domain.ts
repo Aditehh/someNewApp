@@ -331,38 +331,44 @@ export async function getPendingProviderVerifications() {
 
 
 
-// export async function CreateService(providerProfileId: number) {
-
-//     const authUser = await getCurrentUser();
-//     if (!authUser) throw new Error("Unauthenticated");
-
-//     if (authUser.role !== "PROVIDER") throw new Error("only provider has access")
-
-//     const ServiceProviderProfile = await prisma.professionalProfile.findUnique({
-//         where: {
-//             userId: authUser.id
-//         }
-//     });
-
-//     if(!ServiceProviderProfile) throw new Error("provider Not found")
-
-
-
-
-
-
-//     const createprofessionalservice = await prisma.service.create({
-
-
-//     })
-
-
-
-// }
-
 
 export async function getAllCategories() {
     const categories = await prisma.category.findMany({})
 
     return categories;
+}
+
+
+
+export async function createService(input: {
+    title: string,
+    description: string,
+    price: number,
+    categoryId: string,
+}) {
+    const authUser = await getCurrentUser();
+    if (!authUser) throw new Error("unauthenticated");
+
+    const serviceProvider = await prisma.professionalProfile.findUnique({
+        where: {
+            userId: authUser.id
+        }
+    });
+
+    if (!serviceProvider) throw new Error("is not a service provider");
+
+    if (!serviceProvider.verified) throw new Error("is not a verified provider");
+
+    if (serviceProvider.status !== "APPROVED") throw new Error("is not an approved provider");
+
+    const service = await prisma.service.create({
+        title: input.title,
+        description: input.description,
+        price: input.price,
+        categoryId: input.categoryId,
+        providerId: serviceProvider.id,
+        status: "DRAFT",
+
+
+    })
 }
