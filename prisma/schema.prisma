@@ -103,10 +103,13 @@ model Service {
   categoryId  Int
   providerId  Int
   createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  duration    Int
 
   category Category            @relation(fields: [categoryId], references: [id])
   provider ProfessionalProfile @relation(fields: [providerId], references: [id])
   bookings Booking[]
+  status   ServiceStatus       @default(DRAFT)
 }
 
 model Category {
@@ -183,4 +186,10 @@ enum VerificationDocumentType {
   NATIONAL_ID
   LICENSE
   OTHER
+}
+
+enum ServiceStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
 }
