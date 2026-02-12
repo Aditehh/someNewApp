@@ -362,6 +362,16 @@ export async function createService(input: {
 
     if (serviceProvider.status !== "APPROVED") throw new Error("is not an approved provider");
 
+
+    const draftcount = await prisma.service.count({
+        where: { providerId: serviceProvider.id, status: "DRAFT" }
+    });
+
+    if (draftcount >= 5) throw new Error(" you have reached the max number of draft services");
+
+
+
+
     const service = await prisma.service.create({
         data: {
             title: input.title,
@@ -375,11 +385,10 @@ export async function createService(input: {
 
     });
 
-    const draftcount = await prisma.service.count({
-        where: { providerId: serviceProvider.id, status: "DRAFT" }
-    });
 
-    if (draftcount >= 5) throw new Error(" you have reached the max number of draft services");
+    return service;
 
 
-}
+
+
+}   
