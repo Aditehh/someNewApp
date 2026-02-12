@@ -1,5 +1,6 @@
 import { getAllCategories } from '@/lib/domain'
 import React from 'react'
+import { createServiceAction } from '@/lib/actions/actions';
 
 export default async function CreateServiceForm() {
 
@@ -10,7 +11,7 @@ export default async function CreateServiceForm() {
         <div className="max-w-md mx-auto bg-white shadow-md rounded-lg p-6 mt-10">
             <h2 className="text-2xl font-bold mb-6 text-center">Create New Service</h2>
 
-            <form className="space-y-4">
+            <form action={createServiceAction} className="space-y-4">
                 {/* Title */}
                 <div>
                     <label htmlFor="title" className="block text-sm font-medium text-gray-700">
