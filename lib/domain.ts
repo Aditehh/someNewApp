@@ -344,7 +344,8 @@ export async function createService(input: {
     title: string,
     description: string,
     price: number,
-    categoryId: string,
+    categoryId: number,
+    duration: number
 }) {
     const authUser = await getCurrentUser();
     if (!authUser) throw new Error("unauthenticated");
@@ -362,13 +363,15 @@ export async function createService(input: {
     if (serviceProvider.status !== "APPROVED") throw new Error("is not an approved provider");
 
     const service = await prisma.service.create({
-        title: input.title,
-        description: input.description,
-        price: input.price,
-        categoryId: input.categoryId,
-        providerId: serviceProvider.id,
-        status: "DRAFT",
-
+        data: {
+            title: input.title,
+            description: input.description,
+            price: input.price,
+            categoryId: input.categoryId,
+            providerId: serviceProvider.id,
+            duration: input.duration,
+            status: "DRAFT",
+        }
 
     })
 }

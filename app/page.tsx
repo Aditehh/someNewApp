@@ -4,6 +4,7 @@ import HeroSection from "@/components/ui/hero-section";
 import Navbar from "@/components/ui/navbar";
 import { getCurrentUser } from "@/lib/domain";
 import { Button } from "@base-ui/react";
+import Link from "next/link";
 
 export default async function Home() {
   const user = await getCurrentUser();
@@ -17,7 +18,7 @@ export default async function Home() {
 
   return (
     <>
-    <Navbar />
+      <Navbar />
       <HeroSection />
       {/* Welcome {user.name}, this is the best service app in Nepal
       {user.role !== "PROVIDER" && <div>
@@ -40,7 +41,9 @@ export default async function Home() {
           </Button>
         )}: {
           <Button className="px-8 py-3 bg-amber-400 hover:bg-amber-500 rounded-lg font-medium">
-            List your service
+            <Link href={"/servicePage"}>
+              List your service
+            </Link>
           </Button>
         }
       </section>
