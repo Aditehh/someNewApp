@@ -373,5 +373,13 @@ export async function createService(input: {
             status: "DRAFT",
         }
 
-    })
+    });
+
+    const draftcount = await prisma.service.count({
+        where: { providerId: serviceProvider.id, status: "DRAFT" }
+    });
+
+    if (draftcount >= 5) throw new Error(" you have reached the max number of draft services");
+
+
 }

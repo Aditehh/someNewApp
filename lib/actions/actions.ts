@@ -6,7 +6,10 @@ import { getCurrentUser } from "../domain";
 import { VerificationDocumentType } from "@/app/generated/prisma/enums";
 import { revalidatePath } from "next/cache";
 import { rejectProviderVerification } from "../domain";
-import { string } from "better-auth";
+import { createService } from "../domain";
+import prisma from "../db";
+
+
 
 export async function becomeProviderAction(formdata: FormData): Promise<void> {
     const location = formdata.get("location")?.toString();
@@ -123,5 +126,56 @@ export async function approveProviderVerificationAction(formdata: FormData) {
     await approveProviderVerification(providerProfileId);
 
     revalidatePath("/admin/verification")
+
+}
+
+
+export async function createServiceAction(formdata: FormData) {
+
+    const title = (formdata.get("title") as string).trim();
+    const description = (formdata.get("description") as string).trim();
+    const rawPrice = formdata.get("price");
+    const rawCategoryId = formdata.get("categoryId");
+    const rawDuration = formdata.get("duration");
+
+    if (!title || !description || !rawPrice || !rawCategoryId || !rawDuration) {
+        throw new Error("Missing fields")
+    }
+
+
+    const price = Number(rawPrice)
+    const categoryId = Number(rawCategoryId)
+    const duration = Number(rawDuration)
+
+
+
+    if (isNaN(price)) throw new Error("Invalid price");
+    if (isNaN(categoryId)) throw new Error("Invalid categoryId")
+    if (isNaN(duration)) throw new Error("Invalid duration");
+
+    const category = await prisma.category.findUnique({
+        where: {
+            id: categoryId,
+        }
+    });
+
+    if (!categoryId) throw new Error("category not found")
+
+    if (title.length >= 11) throw new Error("Title too long");
+    if (description.length >= 50) throw new Error("Description too long");
+    if (price < 0 && price > 50000) throw new Error("Invalid");
+
+
+
+    await createService({
+        title,
+        description,
+        price,
+        categoryId,
+        duration
+    });
+
+
+
 
 }
