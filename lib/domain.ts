@@ -370,6 +370,7 @@ export async function createService(input: {
     if (draftcount >= 5) throw new Error(" you have reached the max number of draft services");
 
     const service = await prisma.service.create({
+
         data: {
             title: input.title,
             description: input.description,
@@ -385,7 +386,34 @@ export async function createService(input: {
 
     return service;
 
+}
 
 
+export async function publishService(serviceId: number) {
+    const authUser = await getCurrentUser();
+    if (!authUser) throw new Error("Unauthorized");
 
-}   
+    const serviceProvider = await prisma.professionalProfile.findUnique({
+        where: {
+            userId: authUser.id
+        }
+    });
+
+    if (!serviceProvider) throw new Error("is not a service provider");
+
+    if (!serviceProvider.verified) throw new Error("is not a verified provider");
+
+    if (serviceProvider.status != "APPROVED") throw new Error("is not an approved provider");
+
+    const service = await prisma.service.update({
+        where: {
+            id: serviceId
+        },
+        data: {
+            status: "PUBLISHED"
+
+        }
+    });
+
+    return service;
+}
