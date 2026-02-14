@@ -455,7 +455,6 @@ export async function archiveService(serviceId: number) {
         }
     });
 
-    // 🔥 THIS IS WHAT I WAS TALKING ABOUT
     if (result.count === 0) {
         throw new Error("Service not found or cannot be archived");
     }
@@ -464,3 +463,35 @@ export async function archiveService(serviceId: number) {
 }
 
 
+export async function getMyServices() {
+    const authUser = await getCurrentUser();
+    if (!authUser) throw new Error("Unauthenticated");
+
+    const serviceProvider = await prisma.professionalProfile.findUnique({
+        where: {
+            userId: authUser.id,
+        }
+    });
+
+    if (!serviceProvider) throw new Error("Not a service provider");
+
+    if (!serviceProvider.verified)
+        throw new Error("Provider not verified");
+
+    if (serviceProvider.status !== "APPROVED")
+        throw new Error("Provider not approved");
+
+    const myServices = await prisma.service.findMany({
+        where: {
+            providerId: serviceProvider.id
+        },
+        include: {
+            category: true
+        },
+        orderBy: {
+            createdAt: "desc"
+        }
+    })
+
+
+}
