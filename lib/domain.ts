@@ -463,6 +463,7 @@ export async function archiveService(serviceId: number) {
 }
 
 
+
 export async function getMyServices() {
     const authUser = await getCurrentUser();
     if (!authUser) throw new Error("Unauthenticated");
@@ -491,7 +492,9 @@ export async function getMyServices() {
         orderBy: {
             createdAt: "desc"
         }
-    })
+    });
+
+    return myServices;
 
 
 }
