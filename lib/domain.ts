@@ -369,9 +369,6 @@ export async function createService(input: {
 
     if (draftcount >= 5) throw new Error(" you have reached the max number of draft services");
 
-
-
-
     const service = await prisma.service.create({
         data: {
             title: input.title,
