@@ -389,6 +389,7 @@ export async function createService(input: {
 }
 
 
+
 export async function publishService(serviceId: number) {
     const authUser = await getCurrentUser();
     if (!authUser) throw new Error("Unauthorized");
@@ -405,9 +406,12 @@ export async function publishService(serviceId: number) {
 
     if (serviceProvider.status != "APPROVED") throw new Error("is not an approved provider");
 
-    const service = await prisma.service.update({
+
+    const service = await prisma.service.updateMany({
         where: {
-            id: serviceId
+            id: serviceId,
+            providerId: serviceProvider.id,
+            status: "DRAFT"
         },
         data: {
             status: "PUBLISHED"
@@ -415,5 +419,48 @@ export async function publishService(serviceId: number) {
         }
     });
 
-    return service;
+    if (service.count === 0) {
+        throw new Error("Service not found or cannot be archived");
+    }
+
+    return { success: true };
 }
+
+
+
+export async function archiveService(serviceId: number) {
+    const authUser = await getCurrentUser();
+    if (!authUser) throw new Error("Unauthorized");
+
+    const serviceProvider = await prisma.professionalProfile.findUnique({
+        where: { userId: authUser.id }
+    });
+
+    if (!serviceProvider) throw new Error("Not a service provider");
+
+    if (!serviceProvider.verified)
+        throw new Error("Provider not verified");
+
+    if (serviceProvider.status !== "APPROVED")
+        throw new Error("Provider not approved");
+
+    const result = await prisma.service.updateMany({
+        where: {
+            id: serviceId,
+            providerId: serviceProvider.id,
+            status: { not: "ARCHIVED" }  // prevent re-archiving
+        },
+        data: {
+            status: "ARCHIVED"
+        }
+    });
+
+    // 🔥 THIS IS WHAT I WAS TALKING ABOUT
+    if (result.count === 0) {
+        throw new Error("Service not found or cannot be archived");
+    }
+
+    return { success: true };
+}
+
+
