@@ -96,15 +96,16 @@ model ProfessionalProfile {
 }
 
 model Service {
-  id          Int      @id @default(autoincrement())
+  id          Int       @id @default(autoincrement())
   title       String
   description String
   price       Int
   categoryId  Int
   providerId  Int
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
   duration    Int
+  deletedAt   DateTime?
 
   category Category            @relation(fields: [categoryId], references: [id])
   provider ProfessionalProfile @relation(fields: [providerId], references: [id])

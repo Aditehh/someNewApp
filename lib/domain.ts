@@ -498,3 +498,72 @@ export async function getMyServices() {
 
 
 }
+
+
+
+export async function editService(serviceId: number, title: string, description: string, price: number, categoryId: number, duration: number) {
+    const authUser = await getCurrentUser();
+    if (!authUser) throw new Error("Unauthorized");
+
+    const serviceProvider = await prisma.professionalProfile.findFirst({
+        where: {
+            userId: authUser.id
+        }
+    });
+
+    if (!serviceProvider) throw new Error("Not a service provider");
+
+    if (!serviceProvider.verified)
+        throw new Error("Provider not verified");
+
+    if (serviceProvider.status !== "APPROVED")
+        throw new Error("Provider not approved");
+
+    const service = await prisma.service.update({
+        where: {
+            id: serviceId,
+            status: "DRAFT"
+        },
+        data: { title, description, price, categoryId, duration }
+    })
+
+
+    return service;
+
+}
+
+
+
+export async function softDelete(serviceId: number) {
+    const authUser = await getCurrentUser();
+    if (!authUser) throw new Error("Unauthorized");
+
+    const serviceProvider = await prisma.professionalProfile.findFirst({
+        where: {
+            userId: authUser.id
+        }
+    });
+
+    if (!serviceProvider) throw new Error("Not a service provider");
+
+    if (!serviceProvider.verified)
+        throw new Error("Provider not verified");
+
+    if (serviceProvider.status !== "APPROVED")
+        throw new Error("Provider not approved");
+
+    const service = await prisma.service.update({
+        where: {
+            id: serviceId,
+            status: {
+                in: ["ARCHIVED"]
+            }
+        },
+        data: {
+            deletedAt: new Date()
+        }
+    })
+
+
+}
+
