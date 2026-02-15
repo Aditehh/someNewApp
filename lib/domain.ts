@@ -502,6 +502,7 @@ export async function getMyServices() {
 
 
 export async function editService(serviceId: number, title: string, description: string, price: number, categoryId: number, duration: number) {
+
     const authUser = await getCurrentUser();
     if (!authUser) throw new Error("Unauthorized");
 
@@ -519,8 +520,9 @@ export async function editService(serviceId: number, title: string, description:
     if (serviceProvider.status !== "APPROVED")
         throw new Error("Provider not approved");
 
-    const service = await prisma.service.update({
+    const service = await prisma.service.updateMany({
         where: {
+            providerId: serviceProvider.id,
             id: serviceId,
             status: "DRAFT"
         },
@@ -535,6 +537,7 @@ export async function editService(serviceId: number, title: string, description:
 
 
 export async function softDelete(serviceId: number) {
+
     const authUser = await getCurrentUser();
     if (!authUser) throw new Error("Unauthorized");
 
@@ -552,11 +555,12 @@ export async function softDelete(serviceId: number) {
     if (serviceProvider.status !== "APPROVED")
         throw new Error("Provider not approved");
 
-    const service = await prisma.service.update({
+    const service = await prisma.service.updateMany({
         where: {
+            providerId: serviceProvider.id,
             id: serviceId,
             status: {
-                in: ["ARCHIVED"]
+                in: ["ARCHIVED", "DRAFT"]
             }
         },
         data: {
@@ -564,6 +568,7 @@ export async function softDelete(serviceId: number) {
         }
     })
 
+    return service
 
 }
 
