@@ -541,9 +541,7 @@ export async function editService(serviceId: number, title: string, description:
 }
 
 
-
 export async function holdDelete(serviceId: number) {
-
     const authUser = await getCurrentUser();
     if (!authUser) throw new Error("Unauthorized");
 
@@ -561,14 +559,17 @@ export async function holdDelete(serviceId: number) {
     if (serviceProvider.status !== "APPROVED")
         throw new Error("Provider not approved");
 
-    const service = await prisma.service.delete({
+    const result = await prisma.service.deleteMany({
         where: {
             id: serviceId,
+            providerId: serviceProvider.id,
             status: "DRAFT"
         }
-    })
+    });
 
-    return service;
+    if (result.count === 0) {
+        throw new Error("Service not found or cannot be deleted");
+    }
 
+    return { success: true };
 }
-
