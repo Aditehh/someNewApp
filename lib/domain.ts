@@ -542,7 +542,7 @@ export async function editService(serviceId: number, title: string, description:
 
 
 
-export async function softDelete(serviceId: number) {
+export async function holdDelete(serviceId: number) {
 
     const authUser = await getCurrentUser();
     if (!authUser) throw new Error("Unauthorized");
@@ -561,26 +561,14 @@ export async function softDelete(serviceId: number) {
     if (serviceProvider.status !== "APPROVED")
         throw new Error("Provider not approved");
 
-    const service = await prisma.service.updateMany({
+    const service = await prisma.service.delete({
         where: {
-            providerId: serviceProvider.id,
             id: serviceId,
-            status: {
-                not: "ARCHIVED"
-            }
-        },
-        data: {
-            deletedAt: new Date()
+            status: "DRAFT"
         }
     })
 
-    if (service.count === 0) {
-        throw new Error("Service not found or cannot be edited");
-    }
-
-
-
-    return { success: true };
+    return service;
 
 }
 
