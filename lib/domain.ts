@@ -4,6 +4,7 @@ import { headers } from 'next/headers';
 import { getCurrentUserAction } from './actions/actions';
 import { VerificationDocumentType, VerificationStatus } from '@/app/generated/prisma/enums';
 import { ProfessionalProfileScalarFieldEnum } from '@/app/generated/prisma/internal/prismaNamespace';
+import { success } from 'better-auth';
 
 
 export async function getCurrentUser() {
@@ -529,8 +530,13 @@ export async function editService(serviceId: number, title: string, description:
         data: { title, description, price, categoryId, duration }
     })
 
+    if (service.count === 0) {
+        throw new Error("Service not found or cannot be edited");
+    }
 
-    return service;
+
+
+    return { success: true };
 
 }
 
@@ -560,7 +566,7 @@ export async function softDelete(serviceId: number) {
             providerId: serviceProvider.id,
             id: serviceId,
             status: {
-                in: ["ARCHIVED", "DRAFT"]
+                not: "ARCHIVED"
             }
         },
         data: {
@@ -568,7 +574,13 @@ export async function softDelete(serviceId: number) {
         }
     })
 
-    return service
+    if (service.count === 0) {
+        throw new Error("Service not found or cannot be edited");
+    }
+
+
+
+    return { success: true };
 
 }
 
