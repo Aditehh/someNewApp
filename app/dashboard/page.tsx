@@ -3,9 +3,16 @@ import BecomeProviderForm from "@/components/ui/become-provider-form";
 import Navbar from "@/components/ui/navbar";
 import { getCurrentUser } from "@/lib/domain";
 import { redirect } from "next/navigation";
+import { getMyServices } from "@/lib/domain";
+import ServiceCard from "@/components/ui/service-card";
 
 export default async function UserDashboard() {
+
     const user = await getCurrentUser();
+    const services = await getMyServices();
+    if (!services) redirect("/")
+
+
     if (!user) redirect("/");
 
     return (
@@ -36,6 +43,14 @@ export default async function UserDashboard() {
                             <BecomeProviderForm />
                         </div>
                     </div>
+
+                    <div>
+                        {services.map(service => (
+                            <ServiceCard key={service.id} service={service} />
+                        ))
+                        }
+                    </div>
+
                 </div>
             </div>
         </>

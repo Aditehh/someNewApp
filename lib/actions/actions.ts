@@ -8,6 +8,8 @@ import { revalidatePath } from "next/cache";
 import { rejectProviderVerification } from "../domain";
 import { createService } from "../domain";
 import prisma from "../db";
+import { editService } from "../domain";
+import { holdDelete } from "../domain";
 
 
 
@@ -175,7 +177,13 @@ export async function createServiceAction(formdata: FormData) {
         duration
     });
 
+}
 
+export async function editServiceAction(serviceId: number, title: string, description: string, price: number, duration: number, categoryId: number) {
+    await editService(serviceId, title, description, price, categoryId, duration);
 
+}
 
+export async function holdDeleteServiceAction(serviceId: number) {
+    await holdDelete(serviceId);
 }
