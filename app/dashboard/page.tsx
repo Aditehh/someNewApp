@@ -9,9 +9,7 @@ import ServiceCard from "@/components/ui/service-card";
 export default async function UserDashboard() {
 
     const user = await getCurrentUser();
-    const services = await getMyServices();
-
-    console.log(services)
+    
 
 
     if (!user) redirect("/");
@@ -45,12 +43,7 @@ export default async function UserDashboard() {
                         </div>
                     </div>
 
-                    <div>
-                        {services.map(service => (
-                            <ServiceCard key={service.id} service={service} />
-                        ))
-                        }
-                    </div>
+                   
 
                 </div>
             </div>

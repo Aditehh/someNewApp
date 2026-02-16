@@ -126,7 +126,6 @@ export async function approveProviderVerification(providerProfileId: number) {
         throw new Error("Forbidden");
     }
 
-    // 1️⃣ Get provider profile being approved
     const providerProfile = await prisma.professionalProfile.findUnique({
         where: { id: providerProfileId },
     });
@@ -139,7 +138,6 @@ export async function approveProviderVerification(providerProfileId: number) {
         throw new Error("Provider already verified");
     }
 
-    // 2️⃣ Find pending verification request
     const verificationRequest = await prisma.providerVerification.findUnique({
         where: { providerId: providerProfile.id },
     });
@@ -148,7 +146,6 @@ export async function approveProviderVerification(providerProfileId: number) {
         throw new Error("No pending verification request");
     }
 
-    // 3️⃣ Approve verification request
     await prisma.providerVerification.update({
         where: { id: verificationRequest.id },
         data: {
@@ -157,7 +154,6 @@ export async function approveProviderVerification(providerProfileId: number) {
         },
     });
 
-    // 4️⃣ Mark provider as verified
     await prisma.professionalProfile.update({
         where: { id: providerProfile.id },
         data: {
@@ -195,7 +191,7 @@ export async function submitVerificationRequest(input: {
         throw new Error("Already verified");
     }
 
-    // Prevent duplicate pending requests
+    // prevent duplicate pending requests
     const existingRequest = await prisma.providerVerification.findFirst({
         where: {
             providerId: providerProfile.id,
@@ -207,7 +203,6 @@ export async function submitVerificationRequest(input: {
         throw new Error("Verification request already pending");
     }
 
-    // Create verification request AND update profile status
     const verificationRequest = await prisma.providerVerification.create({
         data: {
             providerId: providerProfile.id,

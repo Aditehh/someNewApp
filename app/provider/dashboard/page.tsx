@@ -91,11 +91,16 @@
 // app/provider/dashboard/page.tsx
 import Navbar from "@/components/ui/navbar";
 import ProviderVerificationForm from "@/components/ui/provider-verification-form";
-import { getCurrentUser } from "@/lib/domain";
+import ServiceCard from "@/components/ui/service-card";
+import { getCurrentUser, getMyServices } from "@/lib/domain";
 import { redirect } from "next/navigation";
 
 export default async function ProviderDashboard() {
     const user = await getCurrentUser();
+
+    const services = await getMyServices();
+
+    console.log(services)
 
     if (!user) redirect("/");
     if (user.role !== "PROVIDER") redirect("/dashboard");
@@ -196,6 +201,14 @@ export default async function ProviderDashboard() {
                             </p>
                         </div>
                     )}
+
+                    <div>
+                        {services.map(service => (
+                            <ServiceCard key={service.id} service={service} />
+                        ))
+                        }
+                    </div>
+
                 </div>
             </div>
         </>
