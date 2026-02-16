@@ -93,6 +93,8 @@ import Navbar from "@/components/ui/navbar";
 import ProviderVerificationForm from "@/components/ui/provider-verification-form";
 import ServiceCard from "@/components/ui/service-card";
 import { getCurrentUser, getMyServices } from "@/lib/domain";
+import { Button } from "@base-ui/react";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 
 export default async function ProviderDashboard() {
@@ -203,10 +205,20 @@ export default async function ProviderDashboard() {
                     )}
 
                     <div>
-                        {services.map(service => (
-                            <ServiceCard key={service.id} service={service} />
-                        ))
-                        }
+                        <div>
+
+                            {services.map(service => (
+                                <ServiceCard key={service.id} service={service} />
+                            ))
+                            }
+                        </div>
+                        <div className="flex items-center justify-center pt-5">
+                            <Link
+                                href="/servicePage"
+                                className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-xl shadow-md hover:bg-blue-700 hover:scale-105 transition-all duration-200 ">
+                                Add Services +
+                            </Link>
+                        </div>
                     </div>
 
                 </div>
