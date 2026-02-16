@@ -205,7 +205,7 @@ export default async function ProviderDashboard() {
                     )}
 
                     <div>
-                        <div>
+                        <div className="pt-5">
 
                             {services.map(service => (
                                 <ServiceCard key={service.id} service={service} />

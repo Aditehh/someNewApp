@@ -2,6 +2,7 @@
 
 import React from "react";
 import { Button } from "./button";
+import EditServiceButton from "./edit-service-button";
 
 type ServiceCardProps = {
     service: {
@@ -12,10 +13,12 @@ type ServiceCardProps = {
         duration: number;
         status: "DRAFT" | "PUBLISHED" | "ARCHIVED";
         createdAt: Date;
-        category?: {
+        category: {
+            id: number;
             name: string;
+
         };
-    };  
+    };
 };
 
 export default function ServiceCard({ service }: ServiceCardProps) {
@@ -68,9 +71,7 @@ export default function ServiceCard({ service }: ServiceCardProps) {
 
             {/* Actions Placeholder */}
             <div className="flex gap-3 mt-5 pt-4 border-t">
-                <Button variant={"ghost"} className="px-4 py-2 text-sm rounded-lg bg-slate-100 hover:bg-slate-200 transition">
-                    Edit
-                </Button>
+                <EditServiceButton serviceId={service.id} title={service.title} description={service.description} price={service.price} categoryId={service.category.id} duration={service.duration} />
 
                 <Button variant={"secondary"} className="px-4 py-2 text-sm rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition">
                     Publish
