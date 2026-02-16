@@ -10,7 +10,6 @@ export default async function UserDashboard() {
 
     const user = await getCurrentUser();
     const services = await getMyServices();
-    // if (!services) redirect("/")
 
     console.log(services)
 
