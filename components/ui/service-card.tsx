@@ -4,6 +4,7 @@ import React from "react";
 import { Button } from "./button";
 import EditServiceButton from "./edit-service-button";
 import DeleteServiceButton from "./delete-service-button";
+import PublishServiceButton from "./publish-service-button";
 
 type ServiceCardProps = {
     service: {
@@ -74,11 +75,10 @@ export default function ServiceCard({ service }: ServiceCardProps) {
             <div className="flex gap-3 mt-5 pt-4 border-t">
                 <EditServiceButton serviceId={service.id} title={service.title} description={service.description} price={service.price} categoryId={service.category.id} duration={service.duration} />
 
-                <Button variant={"secondary"} className="px-4 py-2 text-sm rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition">
-                    Publish
-                </Button>
-
-                <DeleteServiceButton serviceId={service.id} />
+                <PublishServiceButton serviceId={service.id} status={service.status} />
+                {service.status != "PUBLISHED" &&
+                    <DeleteServiceButton serviceId={service.id} />
+                }
             </div>
         </div>
     );

@@ -191,4 +191,6 @@ export async function holdDeleteServiceAction(serviceId: number) {
 
 export async function publishServiceAction(serviceId: number) {
     await publishService(serviceId);
+
+    revalidatePath("/provider/dashboard")
 }
