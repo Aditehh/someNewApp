@@ -89,11 +89,11 @@
 
 
 // app/provider/dashboard/page.tsx
+import { Button } from "@/components/ui/button";
 import Navbar from "@/components/ui/navbar";
 import ProviderVerificationForm from "@/components/ui/provider-verification-form";
 import ServiceCard from "@/components/ui/service-card";
 import { getCurrentUser, getMyServices } from "@/lib/domain";
-import { Button } from "@base-ui/react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
@@ -212,17 +212,38 @@ export default async function ProviderDashboard() {
                             ))
                             }
                         </div>
-                        <div className="flex items-center justify-center pt-5">
-                            <Link
+
+                        {services.length <= 4 &&
+                            <div className="flex items-center justify-center pt-5 "
+                            >
+                                <Button
+                                    className="bg-blue-800"
+                                    variant={"default"} >
+
+                                    <Link
+                                        // className="flex items-center justify-center pt-5"
+                                        href={"/servicePage"}>
+                                        Add Services +
+                                    </Link>
+                                </Button>
+                            </div>
+
+                        }
+
+                        {services.length == 5 &&
+                            < div className="flex items-center justify-center pt-5">
+                                {/* <Link
                                 href="/servicePage"
                                 className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-xl shadow-md hover:bg-blue-700 hover:scale-105 transition-all duration-200 ">
                                 Add Services +
-                            </Link>
-                        </div>
+                            </Link> */}
+                                <span className="flex items-center justify-center pt-5"> cannot add more services</span>
+                            </div>}
+
                     </div>
 
                 </div>
-            </div>
+            </div >
         </>
     );
 }

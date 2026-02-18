@@ -3,6 +3,7 @@
 import React from "react";
 import { Button } from "./button";
 import EditServiceButton from "./edit-service-button";
+import DeleteServiceButton from "./delete-service-button";
 
 type ServiceCardProps = {
     service: {
@@ -77,9 +78,7 @@ export default function ServiceCard({ service }: ServiceCardProps) {
                     Publish
                 </Button>
 
-                <Button variant={"destructive"} className="px-4 py-2 text-sm rounded-lg bg-red-100 text-red-600 hover:bg-red-200 transition">
-                    Delete
-                </Button>
+                <DeleteServiceButton serviceId={service.id} />
             </div>
         </div>
     );
