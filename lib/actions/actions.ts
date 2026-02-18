@@ -10,6 +10,7 @@ import { createService } from "../domain";
 import prisma from "../db";
 import { editService } from "../domain";
 import { holdDelete } from "../domain";
+import { publishService } from "../domain";
 
 
 
@@ -186,4 +187,8 @@ export async function editServiceAction(serviceId: number, title: string, descri
 
 export async function holdDeleteServiceAction(serviceId: number) {
     await holdDelete(serviceId);
+}
+
+export async function publishServiceAction(serviceId: number) {
+    await publishService(serviceId);
 }
