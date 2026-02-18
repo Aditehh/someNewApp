@@ -4,7 +4,7 @@ import { headers } from 'next/headers';
 import { getCurrentUserAction } from './actions/actions';
 import { VerificationDocumentType, VerificationStatus } from '@/app/generated/prisma/enums';
 import { ProfessionalProfileScalarFieldEnum } from '@/app/generated/prisma/internal/prismaNamespace';
-import { success } from 'better-auth';
+import { includes, success } from 'better-auth';
 
 
 export async function getCurrentUser() {
@@ -571,3 +571,30 @@ export async function holdDelete(serviceId: number) {
 
     return { success: true };
 }
+
+
+
+export async function getPublishedServices() {
+
+    const publishedservices = await prisma.service.findMany({
+        where: {
+            status: "PUBLISHED"
+        },
+        include: {
+            category: true,
+            provider: {
+                include: {
+                    user: true
+                },
+            }
+        },
+        orderBy: {
+            createdAt: "desc"
+        }
+    })
+
+    return publishedservices;
+
+}
+
+

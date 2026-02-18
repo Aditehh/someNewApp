@@ -102,7 +102,7 @@ export default async function ProviderDashboard() {
 
     const services = await getMyServices();
 
-    console.log(services)
+    // console.log(services)
 
     if (!user) redirect("/");
     if (user.role !== "PROVIDER") redirect("/dashboard");

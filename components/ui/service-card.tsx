@@ -76,6 +76,7 @@ export default function ServiceCard({ service }: ServiceCardProps) {
                 <EditServiceButton serviceId={service.id} title={service.title} description={service.description} price={service.price} categoryId={service.category.id} duration={service.duration} />
 
                 <PublishServiceButton serviceId={service.id} status={service.status} />
+                
                 {service.status != "PUBLISHED" &&
                     <DeleteServiceButton serviceId={service.id} />
                 }
