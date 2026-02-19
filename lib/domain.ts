@@ -598,4 +598,31 @@ export async function getPublishedServices() {
 }
 
 
-    
+export async function createBookings(serviceId: number) {
+
+    const authUser = await getCurrentUser();
+    if (!authUser) throw new Error("unauthorized");
+
+    const service = await prisma.service.findUnique({
+        where: {
+            id: serviceId
+        }
+    })
+
+    const bookings = await prisma.booking.create({
+        data: {
+            userId: authUser.id,
+            serviceId: service?.id,
+            providerId: service?.providerId,
+            status: "PENDING",
+            date: 
+        }
+    })
+
+
+
+
+
+
+
+}
