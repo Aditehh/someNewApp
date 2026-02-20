@@ -631,12 +631,42 @@ export async function createBookings(serviceId: number, input: { date: string })
     return bookings;
 }
 
+
+
+
 export async function getProviderBookings() {
 
     const authUser = await getCurrentUser();
-    if(authUser) throw new Error("unauthorized");
+    if (!authUser) throw new Error("unauthorized");
 
-    
+    const providerProfile = await prisma.professionalProfile.findUnique({
+        where: {
+            userId: authUser.id
+        }
+    });
+
+    if (!providerProfile) throw new Error("cannot fetch data")
+
+    return prisma.booking.findMany({
+        where: {
+            providerId: providerProfile.id
+        }
+    })
+
+}
+
+export async function approveBooking(bookingId: number) {
+
+    const authUser = await getCurrentUser();
+    if(!authUser) throw new Error("unauthorized");
+
+     const providerProfile = await prisma.professionalProfile.findUnique({
+        where: {
+            userId: authUser.id
+        }
+    });
+
+    if (!providerProfile) throw new Error("cannot fetch data")
 
 
 
