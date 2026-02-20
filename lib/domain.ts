@@ -599,7 +599,7 @@ export async function getPublishedServices() {
 
 
 
-export async function createBookings(serviceId: number) {
+export async function createBookings(serviceId: number, input: { date: string }) {
 
     const authUser = await getCurrentUser();
     if (!authUser) throw new Error("unauthorized");
@@ -607,10 +607,16 @@ export async function createBookings(serviceId: number) {
     const service = await prisma.service.findUnique({
         where: {
             id: serviceId
+        },
+        include: {
+            provider: true
         }
     });
 
+
     if (!service) throw new Error("no service found");
+
+    if (service.provider.userId === authUser.id) throw new Error("You cannot book your own service")
 
     const bookings = await prisma.booking.create({
         data: {
@@ -618,7 +624,9 @@ export async function createBookings(serviceId: number) {
             serviceId: service.id,
             providerId: service.providerId,
             status: "PENDING",
-            date: new Date(),
+            date: new Date(input.date),
         }
     })
+
+    return bookings;
 }
