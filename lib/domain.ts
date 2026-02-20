@@ -630,3 +630,14 @@ export async function createBookings(serviceId: number, input: { date: string })
 
     return bookings;
 }
+
+export async function getProviderBookings() {
+
+    const authUser = await getCurrentUser();
+    if(authUser) throw new Error("unauthorized");
+
+    
+
+
+
+}
