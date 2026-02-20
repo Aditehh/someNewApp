@@ -598,6 +598,7 @@ export async function getPublishedServices() {
 }
 
 
+
 export async function createBookings(serviceId: number) {
 
     const authUser = await getCurrentUser();
@@ -607,22 +608,17 @@ export async function createBookings(serviceId: number) {
         where: {
             id: serviceId
         }
-    })
+    });
+
+    if (!service) throw new Error("no service found");
 
     const bookings = await prisma.booking.create({
         data: {
             userId: authUser.id,
-            serviceId: service?.id,
-            providerId: service?.providerId,
+            serviceId: service.id,
+            providerId: service.providerId,
             status: "PENDING",
-            date: 
+            date: new Date(),
         }
     })
-
-
-
-
-
-
-
 }
