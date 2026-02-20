@@ -650,6 +650,14 @@ export async function getProviderBookings() {
     return prisma.booking.findMany({
         where: {
             providerId: providerProfile.id
+        },
+        include: {
+            user: true,
+            service: true,
+
+        },
+        orderBy: {
+            createdAt: "desc"
         }
     })
 
@@ -670,13 +678,67 @@ export async function approveBooking(bookingId: number) {
 
     if (!providerProfile) throw new Error("cannot fetch data");
 
-    return prisma.booking.update({
+    const booking = await prisma.booking.findUnique({
+        where: {
+            id: bookingId
+        }
+    });
+
+    if (!booking) throw new Error("no booking found for this user")
+
+    if (booking.providerId !== providerProfile.id) throw new Error("no eligible");
+
+    if (booking.status !== "PENDING") throw new Error("not a pending request")
+
+    const bookingupdate = await prisma.booking.update({
         where: {
             id: bookingId
         },
         data: {
             status: "CONFIRMED"
         }
-    })
+    });
+
+    return bookingupdate;
+}
+
+
+
+export async function rejectBooking(bookingId: number) {
+
+    const authUser = await getCurrentUser();
+    if (!authUser) throw new Error("unauthorized");
+
+    const providerProfile = await prisma.professionalProfile.findUnique({
+        where: {
+            userId: authUser.id
+        }
+    });
+
+    if (!providerProfile) throw new Error("cannot fetch data");
+
+    const booking = await prisma.booking.findUnique({
+        where: {
+            id: bookingId
+        }
+    });
+
+    if (!booking) throw new Error("no booking found for this user")
+
+    if (booking.providerId !== providerProfile.id) throw new Error("no eligible");
+
+    if (booking.status !== "PENDING") throw new Error("not a pending request")
+
+    const bookingupdate = await prisma.booking.update({
+        where: {
+            id: bookingId
+        },
+        data: {
+            status: "CANCELLED"
+        }
+    });
+
+    return bookingupdate;
 
 }
+

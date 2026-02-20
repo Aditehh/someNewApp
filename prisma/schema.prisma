@@ -159,7 +159,6 @@ enum Role {
 enum BookingStatus {
   PENDING
   CONFIRMED
-  COMPLETED
   CANCELLED
 }
 
