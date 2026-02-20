@@ -655,19 +655,28 @@ export async function getProviderBookings() {
 
 }
 
+
+
 export async function approveBooking(bookingId: number) {
 
     const authUser = await getCurrentUser();
-    if(!authUser) throw new Error("unauthorized");
+    if (!authUser) throw new Error("unauthorized");
 
-     const providerProfile = await prisma.professionalProfile.findUnique({
+    const providerProfile = await prisma.professionalProfile.findUnique({
         where: {
             userId: authUser.id
         }
     });
 
-    if (!providerProfile) throw new Error("cannot fetch data")
+    if (!providerProfile) throw new Error("cannot fetch data");
 
-
+    return prisma.booking.update({
+        where: {
+            id: bookingId
+        },
+        data: {
+            status: "CONFIRMED"
+        }
+    })
 
 }
