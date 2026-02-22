@@ -197,7 +197,7 @@ export default async function ProviderDashboard() {
                     {!verified && status === "PENDING" && (
                         <div className="bg-amber-50 border border-amber-200 rounded-xl p-6">
                             <p className="text-sm text-amber-700">
-                                <ProviderVerificationForm />
+                                {/* <ProviderVerificationForm /> */}
                                 Your verification request is under review.
                                 You'll be notified once verified.
                             </p>

@@ -4,24 +4,6 @@ import Navbar from "@/components/ui/navbar";
 import { getProviderBookings } from "@/lib/domain";
 
 
-// type Booking = {
-//     id: number;
-//     user: {
-//         name: string | null;
-//         email: string;
-//     };
-//     service: {
-//         title: string;
-//         price: number;
-//         duration: number;
-//     };
-//     date: Date;
-//     status: "PENDING" | "CONFIRMED" | "REJECTED";
-// };
-
-// interface ProviderBookingsPageProps {
-//     bookings: Booking[];    
-// }
 
 export default async function ProviderBookingsPage() {
 
@@ -35,6 +17,8 @@ export default async function ProviderBookingsPage() {
         <>
 
         <Navbar/>
+
+        
             <div className="min-h-screen bg-slate-50 p-8">
                 <div className="max-w-6xl mx-auto">
 

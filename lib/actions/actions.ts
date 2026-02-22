@@ -1,6 +1,6 @@
 "use server";
 
-import { approveProviderVerification, becomeProvider, submitVerificationRequest } from "../domain";
+import { approveBooking, approveProviderVerification, becomeProvider, submitVerificationRequest } from "../domain";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "../domain";
 import { VerificationDocumentType } from "@/app/generated/prisma/enums";
@@ -193,4 +193,10 @@ export async function publishServiceAction(serviceId: number) {
     await publishService(serviceId);
 
     revalidatePath("/provider/dashboard")
+}
+
+export async function approveBookingAction(bookingId: number) {
+    await approveBooking(bookingId);
+
+    revalidatePath("/provider/booking")
 }

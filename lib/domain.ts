@@ -479,9 +479,8 @@ export async function getMyServices() {
         return []
     }
 
-    // if (serviceProvider.status !== "APPROVED") {
-    //     throw new Error("Provider is not approved");
-    // }
+    if (serviceProvider.status !== "APPROVED") {
+    }
 
     const myServices = await prisma.service.findMany({
         where: {
