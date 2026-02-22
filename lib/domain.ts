@@ -462,6 +462,7 @@ export async function archiveService(serviceId: number) {
 
 export async function getMyServices() {
     const authUser = await getCurrentUser();
+
     if (!authUser) {
         throw new Error("Unauthenticated");
     }
@@ -474,13 +475,13 @@ export async function getMyServices() {
         throw new Error("You are not a service provider");
     }
 
-    if (!serviceProvider.verified) {
-        throw new Error("Provider is not verified");
+    if (!serviceProvider.verified && serviceProvider.status == "PENDING") {
+        return []
     }
 
-    if (serviceProvider.status !== "APPROVED") {
-        throw new Error("Provider is not approved");
-    }
+    // if (serviceProvider.status !== "APPROVED") {
+    //     throw new Error("Provider is not approved");
+    // }
 
     const myServices = await prisma.service.findMany({
         where: {

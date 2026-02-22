@@ -180,7 +180,6 @@ export default async function ProviderDashboard() {
                         </div>
                     </div>
 
-                    {/* ---------------- Verification CTA ---------------- */}
                     {!verified && (status === "NOT_REQUESTED" || status === "REJECTED") && (
                         <div className="bg-amber-50 border border-amber-200 rounded-xl p-6 space-y-4">
                             <ProviderVerificationForm />
@@ -195,9 +194,10 @@ export default async function ProviderDashboard() {
                     )}
 
                     {/* ---------------- Pending Message ---------------- */}
-                    {status === "PENDING" && (
+                    {!verified && status === "PENDING" && (
                         <div className="bg-amber-50 border border-amber-200 rounded-xl p-6">
                             <p className="text-sm text-amber-700">
+                                <ProviderVerificationForm />
                                 Your verification request is under review.
                                 You'll be notified once verified.
                             </p>
