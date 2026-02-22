@@ -403,6 +403,10 @@ export async function publishService(serviceId: number) {
     if (serviceProvider.status != "APPROVED") throw new Error("is not an approved provider");
 
 
+
+    
+
+
     const service = await prisma.service.updateMany({
         where: {
             id: serviceId,

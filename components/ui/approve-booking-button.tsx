@@ -4,15 +4,19 @@ import { Button } from "./button";
 import React from 'react'
 
 interface ApproveBookingProps {
-    bookingId: number
+    bookingId: number;
+    date: string
 }
 
-export default function ApproveBookingButton({ bookingId }: ApproveBookingProps) {
+export default function ApproveBookingButton({ bookingId, date }: ApproveBookingProps) {
     return (
         <div>
-<Button>
-    
-</Button>
+            <form action={approveBookingAction}>
+
+                <Button>
+
+                </Button>
+            </form>
         </div>
     )
 }
