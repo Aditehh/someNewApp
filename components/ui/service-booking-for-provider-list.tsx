@@ -2,19 +2,43 @@ import { Button } from "./button";
 
 import React from 'react'
 
-export default function ServiceBookingForProviderList() {
+
+type Booking = {
+    id: number;
+    user: {
+        name: string | null;
+        email: string;
+    };
+    service: {
+        title: string;
+        price: number;
+        duratin: number;
+    };
+    date: Date;
+    status: "PENDING" | "CONFIRMED" | "REJECTED";
+};
+
+interface ProviderBookingsPageProps {
+    bookings: Booking
+}
 
 
 
-  return (
-    <div>
-      
-      
+export default function ServiceBookingForProviderList({
+    bookings,
+}: ProviderBookingsPageProps) {
+
+
+
+    return (
+        <div>
 
 
 
 
 
-    </div>
-  )
+
+
+        </div>
+    )
 }
