@@ -1,6 +1,8 @@
 
+import ApproveBookingButton from "@/components/ui/approve-booking-button";
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/ui/navbar";
+import RejectBookingButton from "@/components/ui/reject-booking-button";
 import { getProviderBookings } from "@/lib/domain";
 
 
@@ -16,9 +18,9 @@ export default async function ProviderBookingsPage() {
     return (
         <>
 
-        <Navbar/>
+            <Navbar />
 
-        
+
             <div className="min-h-screen bg-slate-50 p-8">
                 <div className="max-w-6xl mx-auto">
 
@@ -84,16 +86,9 @@ export default async function ProviderBookingsPage() {
                                 {/* Action Buttons */}
                                 {booking.status === "PENDING" && (
                                     <div className="flex gap-3 mt-6 pt-4 border-t">
-                                        {/* <Button className="bg-green-600 hover:bg-green-700 text-white">
-                                        Approve
-                                        </Button>
-                                        
-                                        <Button
-                                        variant="destructive"
-                                        className="bg-red-100 text-red-600 hover:bg-red-200"
-                                        >
-                                        Reject
-                                        </Button> */}
+                                        <ApproveBookingButton />
+
+                                        <RejectBookingButton />
                                     </div>
                                 )}
                             </div>

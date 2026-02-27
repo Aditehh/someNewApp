@@ -1,6 +1,6 @@
 "use server";
 
-import { approveBooking, approveProviderVerification, becomeProvider, createBookings, submitVerificationRequest } from "../domain";
+import { approveBooking, approveProviderVerification, becomeProvider, createBookings, rejectBooking, submitVerificationRequest } from "../domain";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "../domain";
 import { VerificationDocumentType } from "@/app/generated/prisma/enums";
@@ -195,12 +195,34 @@ export async function publishServiceAction(serviceId: number) {
     revalidatePath("/provider/dashboard")
 }
 
-export async function approveBookingAction(bookingId: number) {
+
+export async function approveBookingAction(formdata: FormData) {
+
+    const rawbookingId = formdata.get("bookingId");
+    if (!rawbookingId) throw new Error("missing fields");
+
+    const bookingId = Number(rawbookingId);
+
+    if (isNaN(bookingId)) throw new Error("bookingId aint a number");
+
     await approveBooking(bookingId);
 
     revalidatePath("/provider/booking")
 }
 
+
+export async function rejectBookingAction(formdata: FormData) {
+
+    const rawbookingId = formdata.get("bookingId");
+    if (!rawbookingId) throw new Error("missing fields");
+
+    const bookingId = Number(rawbookingId);
+
+    if (isNaN(bookingId)) throw new Error("bookingId aint a number");
+
+
+    await rejectBooking(bookingId)
+}
 
 
 
@@ -224,5 +246,5 @@ export async function createBookingsAction(formdata: FormData) {
     await createBookings(serviceId, { date });
 
     redirect("/dashboard")
-    
+
 }
