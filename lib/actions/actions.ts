@@ -205,6 +205,7 @@ export async function approveBookingAction(bookingId: number) {
 
 
 export async function createBookingsAction(formdata: FormData) {
+    
     const rawServiceId = formdata.get("serviceId");
     const rawDate = formdata.get("date");
 

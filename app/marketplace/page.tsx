@@ -1,5 +1,6 @@
 // app/marketplace/page.tsx
 
+import CreateBookingsButton from "@/components/ui/create-bookings-button";
 import Navbar from "@/components/ui/navbar";
 import { getPublishedServices } from "@/lib/domain";
 
@@ -64,11 +65,7 @@ export default async function MarketplacePage() {
                                         </div>
                                     </div>
 
-                                    <button
-                                        className="mt-6 w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
-                                    >
-                                        Book Now
-                                    </button>
+                                    <CreateBookingsButton serviceId={service.id} />
                                 </div>
                             ))}
                         </div>

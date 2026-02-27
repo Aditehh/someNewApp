@@ -536,8 +536,6 @@ export async function editService(serviceId: number, title: string, description:
         throw new Error("Service not found or cannot be edited");
     }
 
-
-
     return { success: true };
 
 }
