@@ -2,7 +2,7 @@
 
 import { createBookingsAction } from '@/lib/actions/actions'
 import { Button } from './button'
-import submitButton from './submitButton'
+import SubmitButton from './submitButton'
 
 interface CreateBookingProp {
     serviceId: number;
@@ -17,7 +17,7 @@ export default function CreateBookingsButton({ serviceId }: CreateBookingProp) {
                     <input type="hidden" name='serviceId' value={serviceId} />
 
                     <input type="date" name='date' />
-                    <submitButton />
+                    <SubmitButton />
 
                 </div>
             </form>
