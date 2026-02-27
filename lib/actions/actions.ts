@@ -202,15 +202,16 @@ export async function approveBookingAction(bookingId: number) {
 }
 
 export async function createBookingsAction(formdata: FormData) {
-    const rawbookingId = formdata.get("bookingId");
+    const rawbookingId = formdata.get("serviceId");
     const date = formdata.get("date");
-
+      
     if (!rawbookingId || !date) throw new Error("missing fields");
 
-    const bookingId = Number(rawbookingId);
+    const serviceId = Number(rawbookingId);
+    const datestring = date as string;
 
-    if (isNaN(bookingId)) throw new Error("Invalid booking Id");
+    if (isNaN(serviceId)) throw new Error("Invalid booking Id");
 
-    await createBookings({ bookingId, date })
+    await createBookings(serviceId, { datestring })
 
 }
