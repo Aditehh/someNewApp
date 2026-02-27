@@ -14,7 +14,7 @@ export default function ApproveBookingButton({ bookingId }: ApproveBookingProp) 
             <input type="hidden" name="bookingId" value={bookingId} />
             <Button type="submit">
                 Approve
-            </Button>
+            </Button>   
         </form>
     );
 }
