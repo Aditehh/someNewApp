@@ -196,32 +196,37 @@ export async function publishServiceAction(serviceId: number) {
 }
 
 
+
+function extractBookingId(formdata: FormData): number {
+    const rawBookingId = formdata.get("bookingId");
+
+    if (!rawBookingId || typeof rawBookingId !== "string") {
+        throw new Error("Missing bookingId");
+    }
+
+    const bookingId = Number(rawBookingId);
+
+    if (isNaN(bookingId)) {
+        throw new Error("Invalid bookingId");
+    }
+
+    return bookingId;
+}
+
 export async function approveBookingAction(formdata: FormData) {
-
-    const rawbookingId = formdata.get("bookingId");
-    if (!rawbookingId) throw new Error("missing fields");
-
-    const bookingId = Number(rawbookingId);
-
-    if (isNaN(bookingId)) throw new Error("bookingId aint a number");
+    const bookingId = extractBookingId(formdata);
 
     await approveBooking(bookingId);
 
-    revalidatePath("/provider/booking")
+    revalidatePath("/provider/booking");
 }
 
-
 export async function rejectBookingAction(formdata: FormData) {
+    const bookingId = extractBookingId(formdata);
 
-    const rawbookingId = formdata.get("bookingId");
-    if (!rawbookingId) throw new Error("missing fields");
+    await rejectBooking(bookingId);
 
-    const bookingId = Number(rawbookingId);
-
-    if (isNaN(bookingId)) throw new Error("bookingId aint a number");
-
-
-    await rejectBooking(bookingId)
+    revalidatePath("/provider/booking");
 }
 
 

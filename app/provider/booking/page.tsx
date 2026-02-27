@@ -86,9 +86,11 @@ export default async function ProviderBookingsPage() {
                                 {/* Action Buttons */}
                                 {booking.status === "PENDING" && (
                                     <div className="flex gap-3 mt-6 pt-4 border-t">
-                                        <ApproveBookingButton />
+                                        
+                                        <ApproveBookingButton bookingId={booking.id} />
 
-                                        <RejectBookingButton />
+                                        <RejectBookingButton bookingId={booking.id} />
+
                                     </div>
                                 )}
                             </div>
