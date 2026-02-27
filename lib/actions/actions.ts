@@ -201,17 +201,24 @@ export async function approveBookingAction(bookingId: number) {
     revalidatePath("/provider/booking")
 }
 
+
+
+
 export async function createBookingsAction(formdata: FormData) {
-    const rawbookingId = formdata.get("serviceId");
-    const date = formdata.get("date");
-      
-    if (!rawbookingId || !date) throw new Error("missing fields");
+    const rawServiceId = formdata.get("serviceId");
+    const rawDate = formdata.get("date");
 
-    const serviceId = Number(rawbookingId);
-    const datestring = date as string;
+    if (!rawServiceId || !rawDate) {
+        throw new Error("Missing fields");
+    }
 
-    if (isNaN(serviceId)) throw new Error("Invalid booking Id");
+    const serviceId = Number(rawServiceId);
 
-    await createBookings(serviceId, { datestring })
+    if (isNaN(serviceId)) {
+        throw new Error("Invalid service ID");
+    }
 
+    const date = rawDate as string;
+
+    await createBookings(serviceId, { date });
 }
