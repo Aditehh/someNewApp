@@ -48,7 +48,7 @@ export default function Navbar() {
 
                     <div className="hidden md:flex gap-6 items-center">
                         <Link href="/">Home</Link>
-                        <Link href="/services">Browse</Link>
+                        <Link href="/marketplace">Marketplace</Link>
 
                         {session && user?.role === "USER" && (
                             <>
@@ -82,10 +82,6 @@ export default function Navbar() {
                         ) : (
                             <Button>Login</Button>
                         )}
-
-
-
-
 
                     </div>
 

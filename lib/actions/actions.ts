@@ -205,7 +205,7 @@ export async function approveBookingAction(bookingId: number) {
 
 
 export async function createBookingsAction(formdata: FormData) {
-    
+
     const rawServiceId = formdata.get("serviceId");
     const rawDate = formdata.get("date");
 
@@ -222,4 +222,7 @@ export async function createBookingsAction(formdata: FormData) {
     const date = rawDate as string;
 
     await createBookings(serviceId, { date });
+
+    redirect("/dashboard")
+    
 }
