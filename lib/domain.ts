@@ -1,10 +1,9 @@
 import prisma from './db';
 import { auth } from './auth';
 import { headers } from 'next/headers';
-import { getCurrentUserAction } from './actions/actions';
 import { VerificationDocumentType, VerificationStatus } from '@/app/generated/prisma/enums';
-import { ProfessionalProfileScalarFieldEnum } from '@/app/generated/prisma/internal/prismaNamespace';
-import { includes, success } from 'better-auth';
+import { BookingStatus } from '@/app/generated/prisma/enums';
+
 
 
 export async function getCurrentUser() {
@@ -615,12 +614,23 @@ export async function createBookings(serviceId: number, input: { date: string })
         }
     });
 
-
-
-
     if (!service) throw new Error("no service found");
 
-    if (service.provider.userId === authUser.id) throw new Error("You cannot book your own service")
+    if (service.provider.userId === authUser.id) throw new Error("You cannot book your own service");
+
+
+    const statuscheck = await prisma.booking.findFirst({
+        where: {
+            userId: authUser.id,
+            serviceId: service.id,
+            status: "CONFIRMED",
+            date: new Date(input.date),
+        }
+
+    });
+
+    if (statuscheck) throw new Error("the service is already booked cannot be booked again")
+
 
     const bookings = await prisma.booking.create({
         data: {
@@ -699,7 +709,7 @@ export async function approveBooking(bookingId: number) {
             id: bookingId
         },
         data: {
-            status: "CONFIRMED"
+            status: BookingStatus.CONFIRMED
         }
     });
 
@@ -739,7 +749,7 @@ export async function rejectBooking(bookingId: number) {
             id: bookingId
         },
         data: {
-            status: "CANCELLED"
+            status: BookingStatus.CANCELLED
         }
     });
 
