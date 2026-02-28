@@ -757,3 +757,39 @@ export async function rejectBooking(bookingId: number) {
 
 }
 
+
+export async function completeBooking(bookingId: number) {
+
+    const authUser = await getCurrentUser();
+    if (!authUser) throw new Error("unauthorized");
+
+    const providerProfile = await prisma.professionalProfile.findUnique({
+        where: {
+            userId: authUser.id
+        }
+    });
+
+    if (!providerProfile) throw new Error("cannot fetch data");
+
+    const booking = await prisma.booking.findUnique({
+        where: {
+            id: bookingId
+        }
+    });
+
+    if (!booking) throw new Error("no booking found for this user")
+
+    if (booking.providerId !== providerProfile.id) throw new Error("no eligible");
+
+    if (booking.status !== "PENDING") throw new Error("not a pending request")
+
+
+    return prisma.booking.update({
+        where: { id: bookingId },
+        data: {
+            status: BookingStatus.COMPLETED,
+            completedAt: new Date()
+        }
+    });
+    
+}

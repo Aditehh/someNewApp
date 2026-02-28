@@ -122,14 +122,18 @@ model Category {
 }
 
 model Booking {
-  id         Int           @id @default(autoincrement())
-  userId     String
-  serviceId  Int
-  providerId Int
-  date       DateTime
-  status     BookingStatus @default(PENDING)
-  createdAt  DateTime      @default(now())
-  updatedAt  DateTime      @updatedAt
+  id          Int           @id @default(autoincrement())
+  userId      String
+  serviceId   Int
+  providerId  Int
+  date        DateTime
+  status      BookingStatus @default(PENDING)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  confirmedAt DateTime?
+  cancelledAt DateTime?
+  completedAt DateTime?
+  serviceDate DateTime?
 
   user     User                @relation(fields: [userId], references: [id])
   service  Service             @relation(fields: [serviceId], references: [id])
@@ -160,6 +164,8 @@ enum BookingStatus {
   PENDING
   CONFIRMED
   CANCELLED
+  COMPLETED
+  EXPIRED
 }
 
 model ProviderVerification {
