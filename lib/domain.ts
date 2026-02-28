@@ -404,7 +404,7 @@ export async function publishService(serviceId: number) {
 
 
 
-    
+
 
 
     const service = await prisma.service.updateMany({
@@ -616,6 +616,8 @@ export async function createBookings(serviceId: number, input: { date: string })
     });
 
 
+
+
     if (!service) throw new Error("no service found");
 
     if (service.provider.userId === authUser.id) throw new Error("You cannot book your own service")
@@ -703,6 +705,7 @@ export async function approveBooking(bookingId: number) {
 
     return bookingupdate;
 }
+
 
 
 
