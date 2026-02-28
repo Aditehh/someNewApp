@@ -1,6 +1,6 @@
 "use server";
 
-import { approveBooking, approveProviderVerification, becomeProvider, createBookings, rejectBooking, submitVerificationRequest } from "../domain";
+import { approveBooking, approveProviderVerification, becomeProvider, completeBooking, createBookings, rejectBooking, submitVerificationRequest } from "../domain";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "../domain";
 import { VerificationDocumentType } from "@/app/generated/prisma/enums";
@@ -251,5 +251,29 @@ export async function createBookingsAction(formdata: FormData) {
     await createBookings(serviceId, { date });
 
     redirect("/dashboard")
+
+}
+
+export async function completeBookingAction(bookingId: number) {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    await completeBooking(bookingId)
+
 
 }
