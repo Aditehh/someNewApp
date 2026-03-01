@@ -1,6 +1,7 @@
 
 import ApproveBookingButton from "@/components/ui/approve-booking-button";
 import { Button } from "@/components/ui/button";
+import BookingCompleteButton from "@/components/ui/completed-booking-button";
 import Navbar from "@/components/ui/navbar";
 import RejectBookingButton from "@/components/ui/reject-booking-button";
 import { getProviderBookings } from "@/lib/domain";
@@ -8,6 +9,13 @@ import { getProviderBookings } from "@/lib/domain";
 
 
 export default async function ProviderBookingsPage() {
+    const statusStyles: Record<string, string> = {
+        PENDING: "bg-yellow-100 text-yellow-700",
+        CONFIRMED: "bg-green-100 text-green-700",
+        COMPLETED: "bg-blue-100 text-blue-700",
+        CANCELLED: "bg-red-100 text-red-600",
+        EXPIRED: "bg-gray-100 text-gray-600",
+    };
 
 
     const bookings = await getProviderBookings();
@@ -69,13 +77,11 @@ export default async function ProviderBookingsPage() {
                                     </div>
 
                                     {/* Status Badge */}
+
+
                                     <div>
                                         <span
-                                            className={`px-3 py-1 text-xs font-medium rounded-full ${booking.status === "PENDING"
-                                                ? "bg-yellow-100 text-yellow-700"
-                                                : booking.status === "CONFIRMED"
-                                                    ? "bg-green-100 text-green-700"
-                                                    : "bg-red-100 text-red-600"
+                                            className={`px-3 py-1 text-xs font-medium rounded-full ${statusStyles[booking.status] ?? "bg-gray-100 text-gray-600"
                                                 }`}
                                         >
                                             {booking.status}
@@ -86,10 +92,18 @@ export default async function ProviderBookingsPage() {
                                 {/* Action Buttons */}
                                 {booking.status === "PENDING" && (
                                     <div className="flex gap-3 mt-6 pt-4 border-t">
-                                        
+
                                         <ApproveBookingButton bookingId={booking.id} />
 
                                         <RejectBookingButton bookingId={booking.id} />
+
+                                    </div>
+                                )}
+
+                                {booking.status === "CONFIRMED" && (
+                                    <div className="flex gap-3 mt-6 pt-4 border-t">
+
+                                        <BookingCompleteButton bookingId={booking.id} />
 
                                     </div>
                                 )}

@@ -250,11 +250,9 @@ export async function createBookingsAction(formdata: FormData) {
 
     await createBookings(serviceId, { date });
 
-    redirect("/dashboard")
+    redirect("/dashboard");
 
 }
-
-
 
 
 export async function completeBookingAction(formData: FormData) {
@@ -273,5 +271,5 @@ export async function completeBookingAction(formData: FormData) {
     await completeBooking(bookingId);
 
     revalidatePath("/provider/booking");
-    
+
 }
