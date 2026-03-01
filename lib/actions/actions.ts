@@ -254,26 +254,24 @@ export async function createBookingsAction(formdata: FormData) {
 
 }
 
-export async function completeBookingAction(bookingId: number) {
 
 
 
+export async function completeBookingAction(formData: FormData) {
+    const rawBookingId = formData.get("bookingId");
 
+    if (!rawBookingId || typeof rawBookingId !== "string") {
+        throw new Error("missing bookingId");
+    }
 
+    const bookingId = Number(rawBookingId);
 
+    if (isNaN(bookingId)) {
+        throw new Error("invalid bookingId");
+    }
 
+    await completeBooking(bookingId);
 
-
-
-
-
-
-
-
-
-
-
-    await completeBooking(bookingId)
-
-
+    revalidatePath("/provider/booking");
+    
 }

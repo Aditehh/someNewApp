@@ -758,31 +758,28 @@ export async function rejectBooking(bookingId: number) {
 }
 
 
-export async function completeBooking(bookingId: number) {
 
+export async function completeBooking(bookingId: number) {
     const authUser = await getCurrentUser();
     if (!authUser) throw new Error("unauthorized");
 
     const providerProfile = await prisma.professionalProfile.findUnique({
-        where: {
-            userId: authUser.id
-        }
+        where: { userId: authUser.id }
     });
 
-    if (!providerProfile) throw new Error("cannot fetch data");
+    if (!providerProfile) throw new Error("provider profile not found");
 
     const booking = await prisma.booking.findUnique({
-        where: {
-            id: bookingId
-        }
+        where: { id: bookingId }
     });
 
-    if (!booking) throw new Error("no booking found for this user")
+    if (!booking) throw new Error("booking not found");
 
-    if (booking.providerId !== providerProfile.id) throw new Error("no eligible");
+    if (booking.providerId !== providerProfile.id)
+        throw new Error("not authorized for this booking");
 
-    if (booking.status !== "PENDING") throw new Error("not a pending request")
-
+    if (booking.status !== BookingStatus.CONFIRMED)
+        throw new Error("only confirmed bookings can be completed");
 
     return prisma.booking.update({
         where: { id: bookingId },
@@ -791,5 +788,4 @@ export async function completeBooking(bookingId: number) {
             completedAt: new Date()
         }
     });
-    
 }
