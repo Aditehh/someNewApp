@@ -755,6 +755,8 @@ export async function rejectBooking(bookingId: number) {
 
     return bookingupdate;
 
+    
+
 }
 
 
@@ -789,3 +791,5 @@ export async function completeBooking(bookingId: number) {
         }
     });
 }
+
+
