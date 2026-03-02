@@ -1,6 +1,6 @@
 "use server";
 
-import { approveBooking, approveProviderVerification, becomeProvider, completeBooking, createBookings, rejectBooking, submitVerificationRequest } from "../domain";
+import { approveBooking, approveProviderVerification, becomeProvider, completeBooking, createBookings, markNotificationAsRead, rejectBooking, submitVerificationRequest } from "../domain";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "../domain";
 import { VerificationDocumentType } from "@/app/generated/prisma/enums";
@@ -272,4 +272,21 @@ export async function completeBookingAction(formData: FormData) {
 
     revalidatePath("/provider/booking");
 
+}
+
+export async function markNotificationAsReadAction(formdata: FormData) {
+
+    const rawnotificationId = formdata.get("notificationId");
+
+    if (!rawnotificationId) throw new Error("missing fields");
+
+    const notificationId = Number(rawnotificationId);
+
+    if (isNaN(notificationId)) {
+        throw new Error("notificationId not a number")
+    }
+
+    await markNotificationAsRead(notificationId);
+
+    revalidatePath("/notification")
 }

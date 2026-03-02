@@ -905,3 +905,22 @@ export async function fetchNotifications() {
         }
     });
 }
+
+
+
+export async function markNotificationAsRead(notificationId: number) {
+    const authUser = await getCurrentUser();
+    if (!authUser) throw new Error("unauthorized");
+
+    return prisma.notification.update({
+        where: {
+            id: notificationId,
+            userId: authUser.id,
+            isRead: false
+        },
+        data: {
+            isRead: true
+        },
+
+    })
+}
