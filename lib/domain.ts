@@ -702,18 +702,33 @@ export async function approveBooking(bookingId: number) {
 
     if (booking.providerId !== providerProfile.id) throw new Error("no eligible");
 
-    if (booking.status !== "PENDING") throw new Error("not a pending request")
+    if (booking.status !== "PENDING") throw new Error("not a pending request");
 
-    const bookingupdate = await prisma.booking.update({
-        where: {
-            id: bookingId
-        },
-        data: {
-            status: BookingStatus.CONFIRMED
-        }
-    });
+    const result = await prisma.$transaction(async (tx) => {
 
+
+        const bookingupdate = await prisma.booking.update({
+            where: {
+                id: bookingId
+            },
+            data: {
+                status: BookingStatus.CONFIRMED,
+                confirmedAt: new Date()
+            }
+        });
+
+
+
+        await tx.notification.create({
+            data: {
+                userId: booking.id
+            }
+        })
+
+    })
     return bookingupdate;
+
+
 }
 
 
@@ -755,7 +770,7 @@ export async function rejectBooking(bookingId: number) {
 
     return bookingupdate;
 
-    
+
 
 }
 
