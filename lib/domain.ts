@@ -541,6 +541,7 @@ export async function editService(serviceId: number, title: string, description:
 
 
 export async function holdDelete(serviceId: number) {
+
     const authUser = await getCurrentUser();
     if (!authUser) throw new Error("Unauthorized");
 
@@ -706,7 +707,7 @@ export async function approveBooking(bookingId: number) {
 
     const result = await prisma.$transaction(async (tx) => {
 
-        const bookingupdate = await prisma.booking.update({
+        const bookingupdate = await tx.booking.update({
             where: {
                 id: bookingId
             },
@@ -764,7 +765,7 @@ export async function rejectBooking(bookingId: number) {
 
     const result = await prisma.$transaction(async (tx) => {
 
-        const bookingupdate = await prisma.booking.update({
+        const bookingupdate = await tx.booking.update({
             where: {
                 id: bookingId
             },
@@ -790,7 +791,60 @@ export async function rejectBooking(bookingId: number) {
 
 
 
+// export async function completeBooking(bookingId: number) {
+//     const authUser = await getCurrentUser();
+//     if (!authUser) throw new Error("unauthorized");
+
+//     const providerProfile = await prisma.professionalProfile.findUnique({
+//         where: { userId: authUser.id }
+//     });
+
+//     if (!providerProfile) throw new Error("provider profile not found");
+
+//     const booking = await prisma.booking.findUnique({
+//         where: { id: bookingId }
+//     });
+
+//     if (!booking) throw new Error("booking not found");
+
+//     if (booking.providerId !== providerProfile.id)
+//         throw new Error("not authorized for this booking");
+
+//     if (booking.status !== BookingStatus.CONFIRMED)
+//         throw new Error("only confirmed bookings can be completed");
+
+//     const result = await prisma.$transaction(async (tx) => {
+
+//         const bookingupdate = await tx.booking.update({
+//             where: { id: bookingId },
+//             data: {
+//                 status: BookingStatus.COMPLETED,
+//                 completedAt: new Date()
+//             }
+//         });
+
+
+//         await tx.notification.create({
+//             data: {
+//                 userId: booking.userId,
+//                 message: "Your booking is complete ",
+//                 type: "BOOKING_COMPLETE"
+//             }
+//         })
+
+//         return bookingupdate;
+
+//     });
+
+//     return result;
+
+
+// }
+
+
 export async function completeBooking(bookingId: number) {
+
+
     const authUser = await getCurrentUser();
     if (!authUser) throw new Error("unauthorized");
 
@@ -814,7 +868,7 @@ export async function completeBooking(bookingId: number) {
 
     const result = await prisma.$transaction(async (tx) => {
 
-        const bookingupdate = await prisma.booking.update({
+        const bookingUpdate = await tx.booking.update({
             where: { id: bookingId },
             data: {
                 status: BookingStatus.COMPLETED,
@@ -822,22 +876,32 @@ export async function completeBooking(bookingId: number) {
             }
         });
 
-
         await tx.notification.create({
             data: {
                 userId: booking.userId,
-                message: "Your booking is complete ",
-                type: "BOOKING_COMPLETE"
+                message: "Your booking has been completed.",
+                type: "BOOKING_COMPLETED"
             }
-        })
+        });
 
-        return bookingupdate;
-
+        return bookingUpdate;
     });
 
     return result;
-
-
 }
 
 
+
+export async function fetchNotifications() {
+    const authUser = await getCurrentUser();
+    if (!authUser) throw new Error("Unauthorized");
+
+    return prisma.notification.findMany({
+        where: {
+            userId: authUser.id
+        },
+        orderBy: {
+            createdAt: "desc"
+        }
+    });
+}
