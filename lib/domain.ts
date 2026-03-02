@@ -721,12 +721,16 @@ export async function approveBooking(bookingId: number) {
 
         await tx.notification.create({
             data: {
-                userId: booking.id
+                userId: booking.userId,
+                message: "Your booking has been approved",
+                type: "BOOKING_APPROVEd"
             }
         })
 
-    })
-    return bookingupdate;
+        return bookingupdate;
+    });
+
+    return result;
 
 
 }
