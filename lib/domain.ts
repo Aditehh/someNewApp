@@ -812,13 +812,32 @@ export async function completeBooking(bookingId: number) {
     if (booking.status !== BookingStatus.CONFIRMED)
         throw new Error("only confirmed bookings can be completed");
 
-    return prisma.booking.update({
-        where: { id: bookingId },
-        data: {
-            status: BookingStatus.COMPLETED,
-            completedAt: new Date()
-        }
+    const result = await prisma.$transaction(async (tx) => {
+
+        const bookingupdate = await prisma.booking.update({
+            where: { id: bookingId },
+            data: {
+                status: BookingStatus.COMPLETED,
+                completedAt: new Date()
+            }
+        });
+
+
+        await tx.notification.create({
+            data: {
+                userId: booking.userId,
+                message: "Your booking is complete ",
+                type: "BOOKING_COMPLETE"
+            }
+        })
+
+        return bookingupdate;
+
     });
+
+    return result;
+
+
 }
 
 
