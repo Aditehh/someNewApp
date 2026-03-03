@@ -274,6 +274,7 @@ export async function completeBookingAction(formData: FormData) {
 
 }
 
+
 export async function markNotificationAsReadAction(formdata: FormData) {
 
     const rawnotificationId = formdata.get("notificationId");
@@ -283,10 +284,12 @@ export async function markNotificationAsReadAction(formdata: FormData) {
     const notificationId = Number(rawnotificationId);
 
     if (isNaN(notificationId)) {
-        throw new Error("notificationId not a number")
+        throw new Error("notificationId not a number");
     }
+
+    
 
     await markNotificationAsRead(notificationId);
 
-    revalidatePath("/notification")
+    revalidatePath("/notification");
 }

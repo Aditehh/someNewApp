@@ -6,7 +6,7 @@ export default async function NotificationPage() {
     const notifications = await fetchNotifications();
 
     return (
-        <div className="max-w-xl mx-auto p-6">
+        <div className={`max-w-xl mx-auto p-6 `} >
             <h1 className="text-2xl font-bold mb-6">Notifications</h1>
 
             {notifications.length === 0 ? (

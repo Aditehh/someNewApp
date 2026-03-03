@@ -559,19 +559,33 @@ export async function holdDelete(serviceId: number) {
     if (serviceProvider.status !== "APPROVED")
         throw new Error("Provider not approved");
 
-    const result = await prisma.service.deleteMany({
-        where: {
-            id: serviceId,
-            providerId: serviceProvider.id,
-            status: "DRAFT"
+
+    const result = await prisma.$transaction(async (tx) => {
+        const deleteResult = await prisma.service.deleteMany({
+            where: {
+                id: serviceId,
+                providerId: serviceProvider.id,
+                status: "DRAFT"
+            }
+        });
+
+        if (deleteResult.count === 0) {
+            throw new Error("Service not found or cannot be deleted");
         }
-    });
 
-    if (result.count === 0) {
-        throw new Error("Service not found or cannot be deleted");
-    }
+        await tx.notification.create({
+            data: {
+                userId: authUser.id,
+                message: "Service Deleted",
+                type: "SERVICE_DELETED"
 
-    return { success: true };
+            }
+        })
+
+        return { success: true };
+    })
+
+
 }
 
 
@@ -633,17 +647,32 @@ export async function createBookings(serviceId: number, input: { date: string })
     if (statuscheck) throw new Error("the service is already booked cannot be booked again")
 
 
-    const bookings = await prisma.booking.create({
-        data: {
-            userId: authUser.id,
-            serviceId: service.id,
-            providerId: service.providerId,
-            status: "PENDING",
-            date: new Date(input.date),
-        }
-    })
+    const result = await prisma.$transaction(async (tx) => {
+        const bookings = await prisma.booking.create({
+            data: {
+                userId: authUser.id,
+                serviceId: service.id,
+                providerId: service.providerId,
+                status: "PENDING",
+                date: new Date(input.date),
+            }
+        });
 
-    return bookings;
+        await tx.notification.create({
+            data: {
+                userId: authUser.id,
+                message: "Your Booking was Created",
+                type: "BOOKING_CREATED"
+
+            }
+        })
+
+        return bookings;
+    });
+
+    return result;
+
+
 }
 
 
@@ -909,6 +938,7 @@ export async function fetchNotifications() {
 
 
 export async function markNotificationAsRead(notificationId: number) {
+
     const authUser = await getCurrentUser();
     if (!authUser) throw new Error("unauthorized");
 
@@ -920,7 +950,11 @@ export async function markNotificationAsRead(notificationId: number) {
         },
         data: {
             isRead: true
-        },
+        }
 
-    })
+    });
+
+
+
+
 }

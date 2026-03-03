@@ -9,7 +9,7 @@ interface MarkAsReadButtonProps {
 export default function MarkAsReadButton({ notificationId }: MarkAsReadButtonProps) {
     return (
         <form action={markNotificationAsReadAction}>
-            <input type="hidden" value={notificationId} />
+            <input type="hidden" name='notificationId' value={notificationId} />
             <Button type='submit' variant={'secondary'}>
                 Mark as Read
             </Button>
