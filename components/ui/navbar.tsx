@@ -24,6 +24,7 @@ export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
     const [user, setUser] = useState<UserProps | null>(null);
 
+
     useEffect(() => {
         if (!session) {
 
@@ -47,8 +48,8 @@ export default function Navbar() {
                     </Link>
 
                     <div className="hidden md:flex gap-6 items-center">
-                        <Link href="/">Home</Link>
                         <Link href="/marketplace">Marketplace</Link>
+                        <Link href="/notification">Notifications</Link>
 
                         {session && user?.role === "USER" && (
                             <>
@@ -61,7 +62,7 @@ export default function Navbar() {
                         {session && user?.role === "PROVIDER" && (
                             <>
                                 <Link href="/provider/dashboard">Dashboard</Link>
-                                <Link href="/provider/edit">Edit Profile</Link>
+                                {/* <Link href="/provider/edit">Edit Profile</Link> */}
                             </>
                         )}
 
