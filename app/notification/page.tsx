@@ -1,4 +1,3 @@
-import React from 'react'
 import { fetchNotifications } from '@/lib/domain'
 import MarkAsReadButton from '@/components/ui/mark-as-read-button';
 
