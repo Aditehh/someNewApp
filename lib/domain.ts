@@ -871,6 +871,8 @@ export async function rejectBooking(bookingId: number) {
 // }
 
 
+
+
 export async function completeBooking(bookingId: number) {
 
 
@@ -921,6 +923,7 @@ export async function completeBooking(bookingId: number) {
 
 
 
+
 export async function fetchNotifications() {
     const authUser = await getCurrentUser();
     if (!authUser) throw new Error("Unauthorized");
@@ -942,19 +945,13 @@ export async function markNotificationAsRead(notificationId: number) {
     const authUser = await getCurrentUser();
     if (!authUser) throw new Error("unauthorized");
 
-    return prisma.notification.update({
+    return prisma.notification.delete({
         where: {
             id: notificationId,
             userId: authUser.id,
             isRead: false
         },
-        data: {
-            isRead: true
-        }
 
     });
-
-
-
 
 }

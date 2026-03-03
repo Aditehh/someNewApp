@@ -25,6 +25,7 @@ export default async function NotificationPage() {
                             });
 
                         return (
+
                             <div
                                 key={notification.id}
                                 className={`p-4 rounded-lg border transition ${notification.isRead
