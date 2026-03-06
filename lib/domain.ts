@@ -954,4 +954,5 @@ export async function markNotificationAsRead(notificationId: number) {
 
     });
 
-}
+}     
+

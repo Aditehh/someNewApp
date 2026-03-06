@@ -28,9 +28,10 @@ export default function Navbar() {
     useEffect(() => {
         if (!session) {
 
-            setUser(null);
+            setUser(null);     
             return;
 
+            
         }
 
         getCurrentUserAction().then(setUser);
