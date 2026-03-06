@@ -1,34 +1,38 @@
 import { getServiceById } from "@/lib/domain";
 
-interface ServicePageProps {
-  params: {
-    serviceId: string;
-  };
-}
+// interface ServicePageProps {
+//   ;
+// }
 
-export default async function ServicePage({ params }: ServicePageProps) {
+export default async function ServicePage({ params }: {
+    params: {
+        serviceId: any
+    }
+}) {
 
-  const serviceId = Number(params.serviceId);
+    console.log(params)
 
-  const service = await getServiceById(serviceId);
+    const serviceId = Number(params.serviceId);
 
-  if (!service) {
-    return <div>Service not found</div>;
-  }
+    const service = await getServiceById(serviceId);
 
-  return (
-    <div>
-      <h1>{service.title}</h1>
+    if (!service) {
+        return <div>Service not found</div>;
+    }
 
-      <p>{service.description}</p>
+    return (
+        <div>
+            <h1>{service.title}</h1>
 
-      <p>Price: Rs {service.price}</p>
+            <p>{service.description}</p>
 
-      <p>Duration: {service.duration} minutes</p>
+            <p>Price: Rs {service.price}</p>
 
-      <p>Provider: {service.provider.user.name}</p>
+            <p>Duration: {service.duration} minutes</p>
 
-      {/* Booking form */}
-    </div>
-  );
+            <p>Provider: {service.provider.user.name}</p>
+
+            {/* Booking form */}
+        </div>
+    );
 }
