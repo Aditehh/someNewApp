@@ -33,7 +33,7 @@ export default async function MarketplacePage() {
                     ) : (
                         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                             {services.map((service) => (
-                                <Link href="/">
+                                <Link href={`/services/${service.id}`}>
                                     <div
                                         key={service.id}
                                         className="bg-white rounded-xl shadow-sm border p-6 hover:shadow-md transition flex flex-col justify-between"
