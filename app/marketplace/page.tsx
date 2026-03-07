@@ -66,7 +66,6 @@ export default async function MarketplacePage() {
                                             </div>
                                         </div>
 
-                                        {/* <CreateBookingsButton serviceId={service.id} /> */}
                                     </div>
                                 </Link>
                             ))}
