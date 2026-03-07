@@ -1035,3 +1035,10 @@ export async function createReview(
 
 }
 
+export async function getAllReviews() {
+    return prisma.review.findMany({
+        where: {
+            
+        }
+    })
+}
