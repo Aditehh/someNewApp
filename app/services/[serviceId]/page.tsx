@@ -19,8 +19,8 @@ export default async function ServicePage({
 
     return (
         <>
-            <Navbar />
 
+            <Navbar />
 
             <div className="min-h-screen bg-slate-50 px-6 py-12">
                 <div className="max-w-4xl mx-auto">
@@ -92,7 +92,6 @@ export default async function ServicePage({
                 </div>
             </div>
         </>
-
 
     );
 }

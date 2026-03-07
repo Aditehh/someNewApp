@@ -1,6 +1,5 @@
 // app/marketplace/page.tsx
 
-import CreateBookingsButton from "@/components/ui/create-bookings-button";
 import Navbar from "@/components/ui/navbar";
 import { getPublishedServices } from "@/lib/domain";
 import Link from "next/link";
@@ -18,7 +17,7 @@ export default async function MarketplacePage() {
 
                     <div>
                         <h1 className="text-3xl font-bold text-slate-800">
-                            Marketplace
+                            Marketplace             
                         </h1>
                         <p className="text-slate-500 mt-2">
                             Discover services offered by verified professionals.
@@ -33,7 +32,7 @@ export default async function MarketplacePage() {
                     ) : (
                         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                             {services.map((service) => (
-                                <Link key={service.id}  href={`/services/${service.id}`}>
+                                <Link key={service.id} href={`/services/${service.id}`}>
                                     <div
                                         className="bg-white rounded-xl shadow-sm border p-6 hover:shadow-md transition flex flex-col justify-between"
                                     >
