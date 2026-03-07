@@ -3,6 +3,8 @@ import React from 'react'
 import AuthButton from './auth-button'
 import { Button } from './button'
 import { useSession } from '@/lib/auth-client'
+import Link from 'next/link'
+
 
 export default function HeroSection() {
     const { data: session } = useSession();
@@ -23,9 +25,11 @@ export default function HeroSection() {
                             <AuthButton />
                         </div>
                     ) : (
-                        <Button className="px-8 py-3 bg-amber-400 hover:bg-amber-500 rounded-lg font-medium">
-                            Browse Services
-                        </Button>
+                        <Link href={"/marketplace"}>
+                            <Button className="px-8 py-3 bg-amber-400 hover:bg-amber-500 rounded-lg font-medium">
+                                Browse Services
+                            </Button>
+                        </Link>
                     )
                 }
             </section >

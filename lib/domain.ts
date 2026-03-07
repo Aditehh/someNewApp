@@ -978,3 +978,60 @@ export async function getServiceById(serviceId: number) {
 
     })
 }
+
+
+export async function getBookings(bookingId: number) {
+    return prisma.booking.findMany({
+        where: {
+            id: bookingId,
+            status: "COMPLETED"
+        },
+        include: {
+
+            service: {
+                include: {
+                    bookings: true
+
+                }
+            },
+
+        }
+    })
+}
+
+
+
+export async function createReview(
+    bookingId: number,
+    rating: number,
+    comment: string
+) {
+    const authUser = await getCurrentUser();
+    if (!authUser) throw new Error("Unauthorized");
+
+    const booking = await prisma.booking.findUnique({
+        where: { id: bookingId },
+        include: {
+            service: true,
+        },
+    });
+
+    if (!booking) throw new Error("Booking not found");
+
+    if (booking.status !== "COMPLETED") {
+        throw new Error("Cannot review incomplete booking");
+    }
+
+    return prisma.review.create({
+        data: {
+            rating,
+            comment,
+            userId: authUser.id,
+            bookingId,
+            serviceId: booking.serviceId,
+            providerId: booking.service.providerId,
+        },
+    });
+
+}
+

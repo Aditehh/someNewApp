@@ -1,6 +1,6 @@
 "use server";
 
-import { approveBooking, approveProviderVerification, becomeProvider, completeBooking, createBookings, markNotificationAsRead, rejectBooking, submitVerificationRequest } from "../domain";
+import { approveBooking, approveProviderVerification, becomeProvider, completeBooking, createBookings, createReview, markNotificationAsRead, rejectBooking, submitVerificationRequest } from "../domain";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "../domain";
 import { VerificationDocumentType } from "@/app/generated/prisma/enums";
@@ -287,9 +287,27 @@ export async function markNotificationAsReadAction(formdata: FormData) {
         throw new Error("notificationId not a number");
     }
 
-    
+
 
     await markNotificationAsRead(notificationId);
 
     revalidatePath("/notification");
+}
+
+export async function createReviewAction(formData: FormData) {
+
+    const rawBookingId = formData.get("bookingId");
+    const rawRating = formData.get("rating");
+    const comment = formData.get("comment") as string;
+
+    if (!rawBookingId || !rawRating || !comment) throw new Error("Missing fields");
+
+    const bookingId = Number(rawBookingId);
+    const rating = Number(rawRating);
+
+    if (!isNaN(bookingId) || !isNaN(rating)) throw new Error("Invalid")
+
+    await createReview(bookingId, rating, comment);
+
+
 }

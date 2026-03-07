@@ -1,6 +1,9 @@
 import CreateBookingsButton from "@/components/ui/create-bookings-button";
 import { getServiceById } from "@/lib/domain";
 import Navbar from "@/components/ui/navbar";
+import EmojiReview from "@/components/ui/star-review";
+
+
 
 export default async function ServicePage({
     params,
@@ -10,6 +13,8 @@ export default async function ServicePage({
     const { serviceId } = await params;
 
     const service = await getServiceById(Number(serviceId));
+
+
 
     if (!service) {
         return (<div className="min-h-screen flex items-center justify-center text-slate-500">
@@ -86,10 +91,12 @@ export default async function ServicePage({
                             <CreateBookingsButton serviceId={service.id} />
 
                         </div>
-
+                        <EmojiReview  />
                     </div>
 
+
                 </div>
+
             </div>
         </>
 
