@@ -113,6 +113,7 @@ model Service {
   provider ProfessionalProfile @relation(fields: [providerId], references: [id])
   bookings Booking[]
   status   ServiceStatus       @default(DRAFT)
+  reviews  Review[]
 }
 
 model Category {
@@ -139,18 +140,26 @@ model Booking {
   user     User                @relation(fields: [userId], references: [id])
   service  Service             @relation(fields: [serviceId], references: [id])
   provider ProfessionalProfile @relation(fields: [providerId], references: [id])
+  reviews  Review[]
 }
 
 model Review {
-  id         Int      @id @default(autoincrement())
-  rating     Int
-  comment    String?
-  userId     String // customer who left review
-  providerId Int // provider being reviewed
-  createdAt  DateTime @default(now())
+  id        Int      @id @default(autoincrement())
+  rating    Int
+  comment   String?
+  createdAt DateTime @default(now())
+
+  userId     String
+  bookingId  Int
+  serviceId  Int
+  providerId Int
 
   user     User                @relation(fields: [userId], references: [id])
+  booking  Booking             @relation(fields: [bookingId], references: [id])
+  service  Service             @relation(fields: [serviceId], references: [id])
   provider ProfessionalProfile @relation(fields: [providerId], references: [id])
+
+  @@unique([bookingId])
 }
 
 // Enums
