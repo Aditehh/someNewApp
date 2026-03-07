@@ -12,7 +12,7 @@ export default async function ServicePage({ params }: {
 
     console.log(params)
 
-    const serviceId = Number(params.serviceId);
+    const serviceId = Number(params);
 
     const service = await getServiceById(serviceId);
 
