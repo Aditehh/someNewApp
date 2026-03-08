@@ -991,7 +991,7 @@ export async function getBookings(bookingId: number) {
             service: {
                 include: {
                     bookings: true
-
+   
                 }
             },
 
