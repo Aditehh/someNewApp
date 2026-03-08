@@ -980,18 +980,17 @@ export async function getServiceById(serviceId: number) {
 }
 
 
-export async function getBookings(bookingId: number) {
-    return prisma.booking.findMany({
+export async function getUserBookingForService(serviceId) {
+    return prisma.booking.findFirst({
         where: {
             id: bookingId,
-            status: "COMPLETED"
         },
         include: {
 
             service: {
                 include: {
                     bookings: true
-   
+
                 }
             },
 
@@ -1038,7 +1037,7 @@ export async function createReview(
 export async function getAllReviews() {
     return prisma.review.findMany({
         where: {
-            
+
         }
     })
 }
