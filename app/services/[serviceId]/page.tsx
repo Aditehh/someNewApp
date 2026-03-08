@@ -91,7 +91,7 @@ export default async function ServicePage({
                             <CreateBookingsButton serviceId={service.id} />
 
                         </div>
-                        <EmojiReview bookingId={} />
+                        <EmojiReview bookingId={booking.id} />
                     </div>
 
 
