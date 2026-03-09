@@ -1022,10 +1022,28 @@ export async function createReview(
     });
 
     if (!booking) throw new Error("Booking not found");
-    
 
-    if (booking.status !== "CONFIRMED") {
-        throw new Error("Cannot review ");
+
+    // if (booking.status !== "CONFIRMED") {
+    //     throw new Error("Cannot review ");
+    // }
+
+    const existingReview = await prisma.review.findUnique({
+        where: {
+            bookingId: bookingId
+        }
+    })
+
+    if (existingReview) {
+        return prisma.review.update({
+            where: {
+                bookingId: bookingId
+            },
+            data: {
+                rating,
+                comment
+            }
+        })
     }
 
     return prisma.review.create({
@@ -1042,10 +1060,23 @@ export async function createReview(
 }
 
 
-// export async function getAllReviews() {
-//     return prisma.review.findMany({
-//         where: {
 
-//         }
-//     })
-// }
+export async function getAllReviewsAndComments(serviceId: number) {
+
+    return prisma.review.findMany({
+
+        where: {
+            serviceId: serviceId,
+        },
+
+        include: {
+            user: true,
+            booking: true,
+            service: true
+        },
+        orderBy: {
+            createdAt: "desc"
+        }
+
+    })
+}

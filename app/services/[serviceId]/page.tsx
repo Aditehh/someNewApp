@@ -3,6 +3,7 @@ import { getServiceById } from "@/lib/domain";
 import Navbar from "@/components/ui/navbar";
 import EmojiReview from "@/components/ui/star-review";
 import { getUserBookingForService } from "@/lib/domain";
+import { getAllReviewsAndComments } from "@/lib/domain";
 
 
 
@@ -16,6 +17,8 @@ export default async function ServicePage({
     const booking = await getUserBookingForService(Number(serviceId))
 
     const service = await getServiceById(Number(serviceId));
+
+    const allreviews = await getAllReviewsAndComments(Number(serviceId))
 
 
 
@@ -97,8 +100,58 @@ export default async function ServicePage({
                         {booking &&
                             <EmojiReview bookingId={booking.id} />
                         }
-                    </div>
 
+
+                        <div className="mt-10 space-y-6">
+
+                            <h2 className="text-2xl font-semibold text-slate-800">
+                                Reviews
+                            </h2>
+
+                            {allreviews.length === 0 && (<div className="bg-white border rounded-xl p-6 text-slate-500 text-sm">
+                                No reviews yet. Be the first to share your experience. </div>
+                            )}
+
+                            {allreviews.map((rev) => (<div
+                                key={rev.id}
+                                className="bg-white border rounded-xl p-6 shadow-sm space-y-3"
+                            >
+
+
+                                {/* User + Rating */}
+                                <div className="flex items-center justify-between">
+
+                                    <span className="font-medium text-slate-800">
+                                        {rev.user.name ?? "Anonymous"}
+                                    </span>
+
+                                    <span className="text-amber-500 font-medium">
+                                        {"⭐".repeat(rev.rating)}
+                                    </span>
+
+                                </div>
+
+                                {/* Comment */}
+                                {rev.comment && (
+                                    <p className="text-slate-600 text-sm leading-relaxed">
+                                        {rev.comment}
+                                    </p>
+                                )}
+
+                                {/* Date */}
+                                <p className="text-xs text-slate-400">
+                                    {new Date(rev.createdAt).toLocaleDateString()}
+                                </p>
+
+                            </div>
+
+
+                            ))}
+
+                        </div>
+
+
+                    </div>
 
                 </div>
 
