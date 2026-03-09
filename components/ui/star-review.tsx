@@ -12,6 +12,7 @@ export default function StarReview({ bookingId }: ReviewProp) {
 
   const [rating, setRating] = useState<number>(0)
   const [hoverRating, setHoverRating] = useState<number | null>(null)
+  const [comment, setComment] = useState("")
 
   const starArray = [1, 2, 3, 4, 5]
 

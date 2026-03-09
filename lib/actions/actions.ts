@@ -300,12 +300,17 @@ export async function createReviewAction(formData: FormData) {
     const rawRating = formData.get("rating");
     const comment = formData.get("comment") as string;
 
-    if (!rawBookingId || !rawRating || !comment) throw new Error("Missing fields");
+    if (!rawBookingId) throw new Error("Missing fields");
+    if (!rawRating) throw new Error("Missing fields");
+    if (!comment) throw new Error("Missing fields");
+
 
     const bookingId = Number(rawBookingId);
     const rating = Number(rawRating);
 
-    if (!isNaN(bookingId) || !isNaN(rating)) throw new Error("Invalid")
+    if (!isNaN(bookingId)) throw new Error("bookingId not a number");
+    if (!isNaN(rating)) throw new Error("rating not a number");
+
 
     await createReview(bookingId, rating, comment);
 

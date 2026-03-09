@@ -2,6 +2,7 @@ import CreateBookingsButton from "@/components/ui/create-bookings-button";
 import { getServiceById } from "@/lib/domain";
 import Navbar from "@/components/ui/navbar";
 import EmojiReview from "@/components/ui/star-review";
+import { getUserBookingForService } from "@/lib/domain";
 
 
 
@@ -11,6 +12,8 @@ export default async function ServicePage({
     params: Promise<{ serviceId: string }>;
 }) {
     const { serviceId } = await params;
+
+    const booking = await getUserBookingForService(Number(serviceId))
 
     const service = await getServiceById(Number(serviceId));
 
@@ -91,7 +94,9 @@ export default async function ServicePage({
                             <CreateBookingsButton serviceId={service.id} />
 
                         </div>
-                        {/* <EmojiReview bookingId={booking.id} /> */}
+                        {booking &&
+                            <EmojiReview bookingId={service.id} />
+                        }
                     </div>
 
 

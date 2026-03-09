@@ -980,17 +980,22 @@ export async function getServiceById(serviceId: number) {
 }
 
 
-export async function getUserBookingForService(serviceId) {
+export async function getUserBookingForService(serviceId: number) {
+
+    const authUser = await getCurrentUser();
+    if (!authUser) throw new Error("Unauthorized");
+
+
     return prisma.booking.findFirst({
         where: {
-            id: bookingId,
+            serviceId: serviceId,
+            userId: authUser.id,
+
         },
         include: {
-
-            service: {  
+            service: {
                 include: {
                     bookings: true
-
                 }
             },
 
