@@ -987,7 +987,7 @@ export async function getUserBookingForService(serviceId) {
         },
         include: {
 
-            service: {
+            service: {  
                 include: {
                     bookings: true
 
