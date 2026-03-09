@@ -4,6 +4,7 @@ import Navbar from "@/components/ui/navbar";
 import EmojiReview from "@/components/ui/star-review";
 import { getUserBookingForService } from "@/lib/domain";
 import { getAllReviewsAndComments } from "@/lib/domain";
+import Image from "next/image";
 
 
 
@@ -121,9 +122,19 @@ export default async function ServicePage({
                                 {/* User + Rating */}
                                 <div className="flex items-center justify-between">
 
-                                    <span className="font-medium text-slate-800">
-                                        {rev.user.name ?? "Anonymous"}
-                                    </span>
+                                    <div className="flex items-center gap-3">
+                                        <img
+                                            src={rev.user.image ?? ""}
+                                            alt={rev.user.name ?? "User"}
+                                            width={32}
+                                            height={32}
+                                            className="rounded-full"
+                                        />
+
+                                        <span className="font-medium text-slate-800">
+                                            {rev.user.name ?? "Anonymous"}
+                                        </span>
+                                    </div>
 
                                     <span className="text-amber-500 font-medium">
                                         {"⭐".repeat(rev.rating)}
@@ -141,6 +152,7 @@ export default async function ServicePage({
                                 {/* Date */}
                                 <p className="text-xs text-slate-400">
                                     {new Date(rev.createdAt).toLocaleDateString()}
+
                                 </p>
 
                             </div>

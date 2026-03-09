@@ -1008,7 +1008,7 @@ export async function getUserBookingForService(serviceId: number) {
 export async function createReview(
     bookingId: number,
     rating: number,
-    comment: string
+    comment: string,
 ) {
     const authUser = await getCurrentUser();
     if (!authUser) throw new Error("Unauthorized");
@@ -1055,6 +1055,9 @@ export async function createReview(
             serviceId: booking.serviceId,
             providerId: booking.service.providerId,
         },
+        include: {
+            user: true
+        }
     });
 
 }
@@ -1080,3 +1083,4 @@ export async function getAllReviewsAndComments(serviceId: number) {
 
     })
 }
+

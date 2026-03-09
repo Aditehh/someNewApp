@@ -295,30 +295,21 @@ export async function markNotificationAsReadAction(formdata: FormData) {
 }
 
 
-export async function createReviewAction(formData: FormData) {
 
+export async function createReviewAction(formData: FormData) {
     const rawBookingId = formData.get("bookingId");
     const rawRating = formData.get("rating");
-    const comment = formData.get("comment") as string | null;
+    const rawComment = formData.get("comment");
 
-
-    if (!rawBookingId) throw new Error("Missing bookingid fields");
-    if (!rawRating) throw new Error("Missing rating fields");
-    if (!comment) throw new Error("Missing comment fields");
-
+    if (!rawBookingId) throw new Error("Missing bookingId field");
+    if (!rawRating) throw new Error("Missing rating field");
 
     const bookingId = Number(rawBookingId);
-    console.log("bookingId from form:", bookingId);
     const rating = Number(rawRating);
+    const comment = typeof rawComment === "string" ? rawComment : "";
 
-    if (isNaN(bookingId)) throw new Error("bookingId not a number");
-    if (isNaN(rating)) throw new Error("rating not a number");
-
+    if (isNaN(bookingId)) throw new Error("bookingId must be a number");
+    if (isNaN(rating)) throw new Error("rating must be a number");
 
     await createReview(bookingId, rating, comment);
-
-
-
 }
-
-
