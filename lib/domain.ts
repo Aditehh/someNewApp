@@ -1014,6 +1014,7 @@ export async function createReview(
     if (!authUser) throw new Error("Unauthorized");
 
     const booking = await prisma.booking.findUnique({
+
         where: { id: bookingId },
         include: {
             service: true,
@@ -1021,9 +1022,10 @@ export async function createReview(
     });
 
     if (!booking) throw new Error("Booking not found");
+    
 
-    if (booking.status !== "COMPLETED") {
-        throw new Error("Cannot review incomplete booking");
+    if (booking.status !== "CONFIRMED") {
+        throw new Error("Cannot review ");
     }
 
     return prisma.review.create({
@@ -1039,10 +1041,11 @@ export async function createReview(
 
 }
 
-export async function getAllReviews() {
-    return prisma.review.findMany({
-        where: {
 
-        }
-    })
-}
+// export async function getAllReviews() {
+//     return prisma.review.findMany({
+//         where: {
+
+//         }
+//     })
+// }
