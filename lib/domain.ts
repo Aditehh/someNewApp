@@ -686,7 +686,7 @@ export async function getProviderBookings() {
     const providerProfile = await prisma.professionalProfile.findUnique({
         where: {
             userId: authUser.id
-        }
+        }    
     });
 
     if (!providerProfile) throw new Error("cannot fetch data")
