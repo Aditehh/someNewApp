@@ -1,3 +1,4 @@
+"use client"
 import React from 'react'
 import { archiveServiceAction } from '@/lib/actions/actions'
 import { Button } from './button'
@@ -18,6 +19,10 @@ export default function ArchiveServiceButton({ serviceId }: ArchiveServiceButton
             await archiveServiceAction(id);
 
         }}>
+            <input type="hidden" name="serviceId" value={serviceId} />
+            <Button type='submit'>
+                Archive
+            </Button>
 
         </form>
     )

@@ -5,6 +5,7 @@ import EmojiReview from "@/components/ui/star-review";
 import { getUserBookingForService } from "@/lib/domain";
 import { getAllReviewsAndComments } from "@/lib/domain";
 import Image from "next/image";
+import ArchiveServiceButton from "@/components/ui/archiveService";
 
 
 
@@ -96,6 +97,7 @@ export default async function ServicePage({
                             </div>
 
                             <CreateBookingsButton serviceId={service.id} />
+                            {/* <ArchiveServiceButton serviceId={service.id} /> */}
 
                         </div>
                         {booking &&
