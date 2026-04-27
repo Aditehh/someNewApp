@@ -155,6 +155,7 @@ export async function createServiceAction(formdata: FormData) {
     if (isNaN(price)) throw new Error("Invalid price");
     if (isNaN(categoryId)) throw new Error("Invalid categoryId")
     if (isNaN(duration)) throw new Error("Invalid duration");
+    
 
     const category = await prisma.category.findUnique({
         where: {
@@ -286,7 +287,6 @@ export async function markNotificationAsReadAction(formdata: FormData) {
     if (isNaN(notificationId)) {
         throw new Error("notificationId not a number");
     }
-
 
 
     await markNotificationAsRead(notificationId);
