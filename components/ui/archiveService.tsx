@@ -11,8 +11,14 @@ interface ArchiveServiceButtonProps {
 
 export default function ArchiveServiceButton({ serviceId }: ArchiveServiceButtonProps) {
     return (
-        <Button onClick={archiveServiceAction} variant={'default'} >
-            archive service
-        </Button>
+        <form action={async (formdata: FormData) => {
+            const id = Number(formdata.get("serviceId"));
+            if (!id) return;
+
+            await archiveServiceAction(id);
+
+        }}>
+
+        </form>
     )
 }
