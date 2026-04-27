@@ -443,6 +443,18 @@ export async function archiveService(serviceId: number) {
     if (serviceProvider.status !== "APPROVED")
         throw new Error("Provider not approved");
 
+
+    const serviceToArchive = await prisma.service.findUnique({
+        where: {
+            id: serviceId,
+            status: "PUBLISHED",
+        },
+
+    })
+
+    if(serviceToArchive?.status !== "PUBLISHED")
+        throw new Error("Only Published services can be archived");
+
     const result = await prisma.service.updateMany({
         where: {
             id: serviceId,
@@ -1083,5 +1095,10 @@ export async function getAllReviewsAndComments(serviceId: number) {
 
     })
 }
+
+
+
+
+
 
      

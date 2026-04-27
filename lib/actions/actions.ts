@@ -1,6 +1,6 @@
 "use server";
 
-import { approveBooking, approveProviderVerification, becomeProvider, completeBooking, createBookings, createReview, getAllReviewsAndComments, markNotificationAsRead, rejectBooking, submitVerificationRequest } from "../domain";
+import { approveBooking, approveProviderVerification, archiveService, becomeProvider, completeBooking, createBookings, createReview, getAllReviewsAndComments, markNotificationAsRead, rejectBooking, submitVerificationRequest } from "../domain";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "../domain";
 import { VerificationDocumentType } from "@/app/generated/prisma/enums";
@@ -155,7 +155,7 @@ export async function createServiceAction(formdata: FormData) {
     if (isNaN(price)) throw new Error("Invalid price");
     if (isNaN(categoryId)) throw new Error("Invalid categoryId")
     if (isNaN(duration)) throw new Error("Invalid duration");
-    
+
 
     const category = await prisma.category.findUnique({
         where: {
@@ -194,6 +194,10 @@ export async function publishServiceAction(serviceId: number) {
     await publishService(serviceId);
 
     revalidatePath("/provider/dashboard")
+}
+
+export async function archiveServiceAction(serviceId: number) {
+    await archiveService(serviceId);
 }
 
 
